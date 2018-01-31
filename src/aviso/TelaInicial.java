@@ -17,6 +17,9 @@ import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.print.event.PrintJobEvent;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 import net.sf.jasperreports.engine.JRException;
@@ -76,6 +79,8 @@ public class TelaInicial extends javax.swing.JFrame {
         txt_nome_funcionario = new javax.swing.JTextField();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
+        txt_Faltas = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -100,6 +105,16 @@ public class TelaInicial extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         data_aquisicao_final.setText("01/01/2018");
+        data_aquisicao_final.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                data_aquisicao_finalFocusLost(evt);
+            }
+        });
+        data_aquisicao_final.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                data_aquisicao_finalKeyReleased(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("a");
@@ -154,6 +169,11 @@ public class TelaInicial extends javax.swing.JFrame {
         txt_ano.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         jButton2.setText("Fechar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("Aviso de Férias");
@@ -183,6 +203,10 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel6.setText("Período de Aquisçâo");
 
+        txt_Faltas.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
+        jLabel11.setText("Faltas");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -208,14 +232,6 @@ public class TelaInicial extends javax.swing.JFrame {
                                         .addGap(113, 113, 113)
                                         .addComponent(jButton3))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txt_mes, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_ano, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel2))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(data_aquisicao_inicial, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -239,7 +255,24 @@ public class TelaInicial extends javax.swing.JFrame {
                                             .addComponent(jLabel12)
                                             .addComponent(jLabel10)
                                             .addComponent(txt_data_emissao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtRetorno, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(txtRetorno, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(txt_mes, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txt_ano, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel1)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel2)))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(67, 67, 67)
+                                                .addComponent(jLabel11))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(64, 64, 64)
+                                                .addComponent(txt_Faltas, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -262,18 +295,24 @@ public class TelaInicial extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(17, 17, 17))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_Faltas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -312,9 +351,9 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bt_imprimirtodos)
-                    .addComponent(jButton2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
+                    .addComponent(bt_imprimirtodos))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -350,6 +389,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }
 
     public void gerar_arquivo_manual() {
+        String total_falta = "";
         String matricula = "";
         String nome = "";
         String cnpf = "";
@@ -402,6 +442,16 @@ public class TelaInicial extends javax.swing.JFrame {
                     rs_recibo.next();) {
                 valor_recibo = rs_recibo.getString("valor");
             }
+
+            String sql_pesquisar_falta = (new StringBuilder()).append("select SUM(V.referencia)as falta FROM variavel V WHERE V.provento = 501 AND ((ANO >= 2017 AND MES >=10) OR (ANO <= 2018 AND MES <=1)) AND  v.matricula = 2840").toString();
+            for (ResultSet rs_falta = stmt.executeQuery(sql_pesquisar_falta);
+                    rs_falta.next();) {
+                total_falta = rs_falta.getString("falta");
+            }
+
+            txt_Faltas.setText(total_falta);
+            System.out.println(total_falta);
+
             if (!(valor_recibo.isEmpty())) {
 
                 Extenso entenso_valor_recibo = new Extenso(Double.parseDouble(valor_recibo));
@@ -413,6 +463,8 @@ public class TelaInicial extends javax.swing.JFrame {
                 nome_servidor.setText(nome);
                 Element matricula_servidor = new Element("matricula");
                 matricula_servidor.setText(matricula);
+                Element total_faltas = new Element("total_faltas");
+                total_faltas.setText(txt_Faltas.getText());
                 Element cpf_servidor = new Element("cnpf");
                 cpf_servidor.setText(cnpf);
                 Element cargo = new Element("nome_cargo");
@@ -492,6 +544,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 servidor.addContent(total_provento_xml);
                 servidor.addContent(total_descontos_xml);
                 servidor.addContent(total_liquido_xml);
+                servidor.addContent(total_faltas);
                 servidor.addContent(proventos);
                 aviso.addContent(servidor);
                 XMLOutputter xout = new XMLOutputter();
@@ -518,10 +571,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
     }
 
-    
-    
-    
-    
+
     private void data_gozo_finalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_data_gozo_finalFocusLost
         // TODO add your handling code here:
         txtRetorno.setText(data_gozo_final.getText());
@@ -545,7 +595,8 @@ public class TelaInicial extends javax.swing.JFrame {
             Statement stmt = Conexao.con.createStatement();
             String sql_pesquisar = (new StringBuilder()).append("select F.nome from FUNCIONARIO F where F.CODIGO = ").append(txt_matricula.getText()).append("").toString();
             for (ResultSet rs = stmt.executeQuery(sql_pesquisar); rs.next();
-                txt_nome_funcionario.setText(rs.getString("nome")));
+                    txt_nome_funcionario.setText(rs.getString("nome")));
+
         } catch (Exception exception) {
 
         }
@@ -553,13 +604,90 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-         // TODO add your handling code here:
+        // TODO add your handling code here:
         Date data_emissao = new Date();
         txt_data_emissao.setDate(data_emissao);
         DateTime dateTime = new DateTime();
         txt_ano.setText(dateTime.toString("yyyy"));
         txt_mes.setText(dateTime.toString("MM"));
     }//GEN-LAST:event_formWindowOpened
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void data_aquisicao_finalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_data_aquisicao_finalKeyReleased
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_data_aquisicao_finalKeyReleased
+
+    private void data_aquisicao_finalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_data_aquisicao_finalFocusLost
+        // TODO add your handling code here:
+        if (txt_Faltas.getText().trim().equals("")) {
+            String total_falta = "";
+            String mes_inicio = "";
+            String data_ano_inicio = "";
+            String mes_fim = "";
+            String data_ano_fim = "";
+            String matricula = "";
+            String messagem = "";
+
+            mes_inicio = data_aquisicao_inicial.getText().substring(3, 5);
+            data_ano_inicio = data_aquisicao_inicial.getText().substring(6, 10);
+            if (mes_inicio.trim().equals("")) {
+                messagem = "Data inicio de aquisição inválida!";
+            }
+            data_ano_fim = data_aquisicao_final.getText().substring(6, 10);
+            mes_fim = data_aquisicao_final.getText().substring(3, 5);
+
+            if (mes_fim.trim().equals("")) {
+                messagem = messagem + "\nData fim de aquisição inválida!";
+            }
+
+            if (!(messagem.trim().equals(""))) {
+                JOptionPane.showMessageDialog(null, messagem, " Erro! ", 2);
+                return;
+            }
+
+            matricula = txt_matricula.getText();
+
+            System.out.println("mes ini: " + mes_inicio);
+            System.out.println("ano ini: " + data_ano_inicio);
+            System.out.println("mes fim: " + mes_fim);
+            System.out.println("ano fim: " + data_ano_fim);
+
+            Conexao.abrirConexao();
+            Statement stmt;
+            try {
+                stmt = Conexao.con.createStatement();
+                String sql_pesquisar_falta = (new StringBuilder())
+                        .append("select SUM(V.referencia)as falta FROM variavel V WHERE V.provento = 501 AND ((ANO >= ")
+                        .append(data_ano_inicio)
+                        .append(" AND MES >=")
+                        .append(mes_inicio)
+                        .append(") OR (ANO <= ")
+                        .append(data_ano_fim)
+                        .append("AND MES <=")
+                        .append(mes_fim)
+                        .append(")) AND  v.matricula =")
+                        .append(matricula).toString();
+                // System.out.println(sql_pesquisar_falta);
+
+                for (ResultSet rs_falta = stmt.executeQuery(sql_pesquisar_falta);
+                        rs_falta.next();) {
+                    total_falta = rs_falta.getString("falta");
+
+                }
+                txt_Faltas.setText(total_falta);
+                System.out.println(total_falta);
+            } catch (SQLException ex) {
+                Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }//GEN-LAST:event_data_aquisicao_finalFocusLost
 
     /**
      * @param args the command line arguments
@@ -606,6 +734,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -621,6 +750,7 @@ public class TelaInicial extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JFormattedTextField txtRetorno;
+    private javax.swing.JTextField txt_Faltas;
     private javax.swing.JTextField txt_ano;
     private com.toedter.calendar.JDateChooser txt_data_emissao;
     private javax.swing.JTextField txt_matricula;

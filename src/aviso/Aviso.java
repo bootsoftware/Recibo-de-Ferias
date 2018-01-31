@@ -5,28 +5,66 @@
  */
 package aviso;
 
+import java.io.File;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+
 /**
  *
  * @author wanderlei
  */
 public class Aviso {
 
+    public static void lerXml() throws JDOMException, IOException {
+
+        File file = null;
+        file = new File((new StringBuilder()).append(System.getProperty("user.dir")).append(".cfg").toString());
+
+        if (file.exists()) {
+            //Aqui você informa o nome do arquivo XML. 
+            //File f = new File("c:/mural.xml");
+            //Criamos uma classe SAXBuilder que vai processar o XML4  
+            SAXBuilder sb = new SAXBuilder();
+            //Este documento agora possui toda a estrutura do arquivo.  
+            Document d = sb.build(file);
+            //Recuperamos o elemento root  
+            Element mural = d.getRootElement();
+            /*
+                System.out.println("Porta:" + mural.getChildText("porta"));
+                System.out.println("Servidor:" + mural.getChildText("servidor"));
+                System.out.println("Senha:" + mural.getChildText("senha"));
+                System.out.println("Banco:" + mural.getChildText("banco"));
+             */
+            Conexao.local_servidor = mural.getChildText("servidor");
+            Conexao.local_porta = mural.getChildText("porta");
+            Conexao.local_senha = mural.getChildText("senha");
+            Conexao.local_banco = mural.getChildText("banco");
+            Conexao.local_user = mural.getChildText("user");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Arquivo 'aviso.cfg' não configurado!\nPor favor configure a conexão!");
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
 
-        Conexao.local_servidor = "localhost";
-        Conexao.local_porta = "3052";
-        //Conexao.local_banco = System.getProperty("user.dir")+"BDSTFOLHA.GDB";
-        Conexao.local_banco = "C:\\DattaSystem\\STFolha\\BDSTFOLHA.GDB";
+        try {
+            lerXml();
+        } catch (JDOMException ex) {
+            System.out.println("erro xml");
+        } catch (IOException ex) {
+            System.out.println("erro arquivo");
+        }
 
         TelaInicial telaic = new TelaInicial();
-        //telaic.setLocationRelativeTo(null);
+        telaic.setLocationRelativeTo(null);
         telaic.setVisible(true);
     }
-
-    // Conexao.abrirConexao();
 }
-

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="avisoferias" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a0da5756-bc8b-4f6a-a977-403b3461e470">
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="avisoferias" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a0da5756-bc8b-4f6a-a977-403b3461e470">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="283"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -73,61 +75,84 @@
 		<![CDATA[/Aviso_Ferias/Servidor]]>
 	</queryString>
 	<field name="nome_servidor" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="nome_servidor"/>
 		<fieldDescription><![CDATA[nome_servidor]]></fieldDescription>
 	</field>
 	<field name="matricula" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="matricula"/>
 		<fieldDescription><![CDATA[matricula]]></fieldDescription>
 	</field>
 	<field name="cnpf" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="cnpf"/>
 		<fieldDescription><![CDATA[cnpf]]></fieldDescription>
 	</field>
 	<field name="nome_cargo" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="nome_cargo"/>
 		<fieldDescription><![CDATA[nome_cargo]]></fieldDescription>
 	</field>
-	<field name="nome_empresa" class="java.lang.String">
-		<fieldDescription><![CDATA[nome_empresa]]></fieldDescription>
-	</field>
-	<field name="cnpj_empresa" class="java.lang.String">
-		<fieldDescription><![CDATA[cnpj_empresa]]></fieldDescription>
-	</field>
-	<field name="cidade" class="java.lang.String">
-		<fieldDescription><![CDATA[cidade]]></fieldDescription>
-	</field>
-	<field name="uf" class="java.lang.String">
-		<fieldDescription><![CDATA[uf]]></fieldDescription>
-	</field>
 	<field name="data_emissao" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="data_emissao"/>
 		<fieldDescription><![CDATA[data_emissao]]></fieldDescription>
 	</field>
 	<field name="aquisicao_inicial" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="aquisicao_inicial"/>
 		<fieldDescription><![CDATA[aquisicao_inicial]]></fieldDescription>
 	</field>
 	<field name="aquisicao_final" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="aquisicao_final"/>
 		<fieldDescription><![CDATA[aquisicao_final]]></fieldDescription>
 	</field>
 	<field name="gozo_inicial" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="gozo_inicial"/>
 		<fieldDescription><![CDATA[gozo_inicial]]></fieldDescription>
 	</field>
 	<field name="gozo_final" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="gozo_final"/>
 		<fieldDescription><![CDATA[gozo_final]]></fieldDescription>
 	</field>
 	<field name="data_retorno" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="data_retorno"/>
 		<fieldDescription><![CDATA[data_retorno]]></fieldDescription>
 	</field>
-	<field name="valor_recibo" class="java.lang.String">
-		<fieldDescription><![CDATA[valor_recibo]]></fieldDescription>
-	</field>
 	<field name="valor_recibo_extenso" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="valor_recibo_extenso"/>
 		<fieldDescription><![CDATA[valor_recibo_extenso]]></fieldDescription>
 	</field>
+	<field name="valor_recibo" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="valor_recibo"/>
+		<fieldDescription><![CDATA[valor_recibo]]></fieldDescription>
+	</field>
+	<field name="nome_empresa" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="nome_empresa"/>
+		<fieldDescription><![CDATA[nome_empresa]]></fieldDescription>
+	</field>
+	<field name="cnpj_empresa" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="cnpj_empresa"/>
+		<fieldDescription><![CDATA[cnpj_empresa]]></fieldDescription>
+	</field>
+	<field name="cidade" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="cidade"/>
+		<fieldDescription><![CDATA[cidade]]></fieldDescription>
+	</field>
+	<field name="uf" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="uf"/>
+		<fieldDescription><![CDATA[uf]]></fieldDescription>
+	</field>
 	<field name="total_porvento" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="total_porvento"/>
 		<fieldDescription><![CDATA[total_porvento]]></fieldDescription>
 	</field>
 	<field name="total_descontos" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="total_descontos"/>
 		<fieldDescription><![CDATA[total_descontos]]></fieldDescription>
 	</field>
 	<field name="total_liquido" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="total_liquido"/>
 		<fieldDescription><![CDATA[total_liquido]]></fieldDescription>
+	</field>
+	<field name="total_faltas" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression" value="total_faltas"/>
+		<fieldDescription><![CDATA[total_faltas]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -251,7 +276,7 @@
 			</staticText>
 			<componentElement>
 				<reportElement key="table 1" style="table 1_TH" mode="Transparent" x="20" y="247" width="518" height="187" uuid="6deffa26-5391-451f-a9aa-127310aa6aee"/>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="Blank">
 					<datasetRun subDataset="Tabela" uuid="c74d868c-d93b-4c03-9251-a1f7b843f418">
 						<dataSourceExpression><![CDATA[((net.sf.jasperreports.engine.data.JRXmlDataSource)$P{REPORT_DATA_SOURCE}).dataSource("/Aviso_Ferias/Servidor/Proventos/provento")]]></dataSourceExpression>
 					</datasetRun>
@@ -348,36 +373,36 @@
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement x="49" y="434" width="40" height="14" uuid="a8188b4d-3e93-4c0b-b692-58b3218193dd"/>
+				<reportElement x="111" y="434" width="40" height="14" uuid="a8188b4d-3e93-4c0b-b692-58b3218193dd"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="99" y="434" width="75" height="14" uuid="acac3187-9488-4896-a821-b4f42485ecba"/>
+				<reportElement x="153" y="434" width="75" height="14" uuid="acac3187-9488-4896-a821-b4f42485ecba"/>
 				<textFieldExpression><![CDATA[$F{total_porvento} == null ? "-" : new DecimalFormat(",##0.00").format(new Double($F{total_porvento}))]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="176" y="434" width="71" height="14" uuid="71b435d4-0fbc-4851-81ab-8018a60efdfc"/>
+				<reportElement x="229" y="434" width="71" height="14" uuid="71b435d4-0fbc-4851-81ab-8018a60efdfc"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[DESCONTOS:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="258" y="434" width="68" height="14" uuid="21255577-a77c-49ea-9fbd-49346e51c277"/>
+				<reportElement x="309" y="434" width="53" height="14" uuid="21255577-a77c-49ea-9fbd-49346e51c277"/>
 				<textFieldExpression><![CDATA[$F{total_descontos} == null ? "-" : new DecimalFormat(",##0.00").format(new Double($F{total_descontos}))]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="325" y="434" width="110" height="14" uuid="862d2cec-211d-4fa5-8d15-2b4813e20148"/>
+				<reportElement x="367" y="434" width="110" height="14" uuid="862d2cec-211d-4fa5-8d15-2b4813e20148"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[LÍQUIDO A RECEBER:]]></text>
 			</staticText>
 			<textField pattern="">
-				<reportElement x="445" y="434" width="71" height="14" uuid="9ec769f4-755a-44c7-bf8f-352bab3ecae7"/>
+				<reportElement x="487" y="434" width="71" height="14" uuid="9ec769f4-755a-44c7-bf8f-352bab3ecae7"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -505,6 +530,17 @@
 				<reportElement x="10" y="0" width="124" height="124" uuid="272f7435-162e-4593-bc45-a20421c8dc07"/>
 				<imageExpression><![CDATA["C:\\DattaSystem\\STFolha\\Aviso\\img\\logo.jpg"]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="66" y="434" width="41" height="13" uuid="58fafdde-cb4f-4e84-9472-462681c87b8f"/>
+				<textFieldExpression><![CDATA[$F{total_faltas}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="435" width="49" height="20" uuid="6b2624dc-1ce3-46c0-8ad5-be422b25d600"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FALTAS: ]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

@@ -17,7 +17,7 @@ public class Gerar_Relatorio {
         try {
             net.sf.jasperreports.engine.JasperReport jasperReport = null;
             String recordPath = "/Aviso_Ferias/Servidor";
-            String xmlFileName = (new StringBuilder()).append(System.getProperty("user.dir")+"-").append(matricula).append(".xml").toString();
+            String xmlFileName = (new StringBuilder()).append(System.getProperty("user.dir")+"\\aviso-").append(matricula).append(".xml").toString();
             String path = System.getProperty("user.dir");
             net.sf.jasperreports.engine.JasperPrint jasperPrint = null;
             String templateName = (new StringBuilder()).append(path).append("\\avisoferias.jrxml").toString();

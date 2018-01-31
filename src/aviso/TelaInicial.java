@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.print.event.PrintJobEvent;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 import net.sf.jasperreports.engine.JRException;
@@ -97,14 +96,12 @@ public class TelaInicial extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        data_aquisicao_inicial.setText("01/01/2018");
 
         try {
             data_aquisicao_final.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        data_aquisicao_final.setText("01/01/2018");
         data_aquisicao_final.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 data_aquisicao_finalFocusLost(evt);
@@ -126,17 +123,20 @@ public class TelaInicial extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        data_gozo_inicial.setText("01/01/2018");
 
         try {
             data_gozo_final.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        data_gozo_final.setText("01/01/2018");
         data_gozo_final.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 data_gozo_finalFocusLost(evt);
+            }
+        });
+        data_gozo_final.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                data_gozo_finalActionPerformed(evt);
             }
         });
 
@@ -159,6 +159,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel2.setText("Ano");
 
+        bt_imprimirtodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/printer.png"))); // NOI18N
         bt_imprimirtodos.setText("Imprimir");
         bt_imprimirtodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,6 +169,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         txt_ano.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/delete.png"))); // NOI18N
         jButton2.setText("Fechar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,7 +190,6 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel4.setText("Matricula");
 
         txt_matricula.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        txt_matricula.setText("2840");
         txt_matricula.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_matriculaKeyReleased(evt);
@@ -368,7 +369,7 @@ public class TelaInicial extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        setSize(new java.awt.Dimension(363, 364));
+        setSize(new java.awt.Dimension(363, 378));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
  private static String format(String pattern, Object value) {
@@ -442,16 +443,6 @@ public class TelaInicial extends javax.swing.JFrame {
                     rs_recibo.next();) {
                 valor_recibo = rs_recibo.getString("valor");
             }
-
-            String sql_pesquisar_falta = (new StringBuilder()).append("select SUM(V.referencia)as falta FROM variavel V WHERE V.provento = 501 AND ((ANO >= 2017 AND MES >=10) OR (ANO <= 2018 AND MES <=1)) AND  v.matricula = 2840").toString();
-            for (ResultSet rs_falta = stmt.executeQuery(sql_pesquisar_falta);
-                    rs_falta.next();) {
-                total_falta = rs_falta.getString("falta");
-            }
-
-            txt_Faltas.setText(total_falta);
-            System.out.println(total_falta);
-
             if (!(valor_recibo.isEmpty())) {
 
                 Extenso entenso_valor_recibo = new Extenso(Double.parseDouble(valor_recibo));
@@ -464,7 +455,11 @@ public class TelaInicial extends javax.swing.JFrame {
                 Element matricula_servidor = new Element("matricula");
                 matricula_servidor.setText(matricula);
                 Element total_faltas = new Element("total_faltas");
-                total_faltas.setText(txt_Faltas.getText());
+                if (txt_Faltas.getText().equals("")) {
+                    total_faltas.setText("0.00");
+                } else {
+                    total_faltas.setText(txt_Faltas.getText());
+                }
                 Element cpf_servidor = new Element("cnpf");
                 cpf_servidor.setText(cnpf);
                 Element cargo = new Element("nome_cargo");
@@ -548,7 +543,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 servidor.addContent(proventos);
                 aviso.addContent(servidor);
                 XMLOutputter xout = new XMLOutputter();
-                FileWriter arquivo = new FileWriter(new File((new StringBuilder()).append(System.getProperty("user.dir") + "-").append(matricula).append(".xml").toString()));
+                FileWriter arquivo = new FileWriter(new File((new StringBuilder()).append(System.getProperty("user.dir") + "\\aviso-").append(matricula).append(".xml").toString()));
                 xout.output(documento, arquivo);
             } else {
                 JOptionPane.showMessageDialog(null, "Erro!\nConfigure as remunerações de férias!");
@@ -667,13 +662,13 @@ public class TelaInicial extends javax.swing.JFrame {
                         .append(data_ano_inicio)
                         .append(" AND MES >=")
                         .append(mes_inicio)
-                        .append(") OR (ANO <= ")
+                        .append(") AND (ANO <= ")
                         .append(data_ano_fim)
-                        .append("AND MES <=")
+                        .append(" AND MES <=")
                         .append(mes_fim)
                         .append(")) AND  v.matricula =")
                         .append(matricula).toString();
-                // System.out.println(sql_pesquisar_falta);
+                System.out.println(sql_pesquisar_falta);
 
                 for (ResultSet rs_falta = stmt.executeQuery(sql_pesquisar_falta);
                         rs_falta.next();) {
@@ -688,6 +683,10 @@ public class TelaInicial extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_data_aquisicao_finalFocusLost
+
+    private void data_gozo_finalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_data_gozo_finalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_data_gozo_finalActionPerformed
 
     /**
      * @param args the command line arguments

@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aviso;
+package aviso.view;
 
+import aviso.model.Conexao;
+import aviso.utilitarios.Extenso;
+import aviso.model.Gerar_Relatorio;
+import aviso.utilitarios.Mensagens;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -677,8 +681,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
                 }
                 txt_Faltas.setText(total_falta);
-                System.out.println(total_falta);
-            } catch (SQLException ex) {
+                            } catch (SQLException ex) {
                 Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

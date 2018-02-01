@@ -3,7 +3,7 @@
 // Decompiler options: packimports(3) 
 // Source File Name:   Conexao.java
 
-package aviso;
+package aviso.model;
 
 import java.sql.*;
 import javax.swing.JOptionPane;

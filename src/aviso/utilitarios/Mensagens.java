@@ -1,4 +1,4 @@
-package aviso;
+package aviso.utilitarios;
 
 import javax.swing.JOptionPane;
 

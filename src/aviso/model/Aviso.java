@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aviso;
+package aviso.model;
 
+import aviso.view.TelaConexao;
+import aviso.view.TelaInicial;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;

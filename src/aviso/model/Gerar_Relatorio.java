@@ -1,4 +1,4 @@
-package aviso;
+package aviso.model;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;

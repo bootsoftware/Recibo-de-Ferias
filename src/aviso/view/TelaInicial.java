@@ -6,8 +6,9 @@
 package aviso.view;
 
 import aviso.model.Conexao;
-import aviso.utilitarios.Extenso;
+import aviso.model.Extenso;
 import aviso.model.Gerar_Relatorio;
+import aviso.model.Servidor;
 import aviso.utilitarios.Mensagens;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -625,6 +626,10 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void data_aquisicao_finalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_data_aquisicao_finalFocusLost
         // TODO add your handling code here:
+        
+     String faltas = Servidor.faltas(txt_Faltas.getText(), data_aquisicao_inicial.getText(), data_aquisicao_final.getText(),txt_matricula.getText());
+      txt_Faltas.setText(faltas);
+      /*  
         if (txt_Faltas.getText().trim().equals("")) {
             String total_falta = "";
             String mes_inicio = "";
@@ -684,7 +689,7 @@ public class TelaInicial extends javax.swing.JFrame {
                             } catch (SQLException ex) {
                 Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }*/
 
     }//GEN-LAST:event_data_aquisicao_finalFocusLost
 

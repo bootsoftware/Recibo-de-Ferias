@@ -29,6 +29,7 @@ public class Conexao
         {
             Class.forName("org.firebirdsql.jdbc.FBDriver");
             con = DriverManager.getConnection("jdbc:firebirdsql:"+ local_servidor+"/"+ local_porta +":"+ local_banco ,local_user, local_senha);
+            System.out.println(con.getMetaData().toString());
             status = "Conectado com sucesso.";
         }
         catch(ClassNotFoundException excUm)

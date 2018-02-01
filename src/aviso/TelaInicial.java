@@ -609,7 +609,8 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        dispose();
+        //dispose();
+        Mensagens.mensagem_sair_sistema();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void data_aquisicao_finalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_data_aquisicao_finalKeyReleased
@@ -642,7 +643,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
 
             if (!(messagem.trim().equals(""))) {
-                JOptionPane.showMessageDialog(null, messagem, " Erro! ", 2);
+                Mensagens.mensagem_tela("Erro data", messagem, "erro");
                 return;
             }
 

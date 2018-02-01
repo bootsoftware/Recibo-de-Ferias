@@ -32,6 +32,8 @@ public class Gerar_Relatorio {
             jrv.setIconImage(null);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+            
+            
         }
     }
 }

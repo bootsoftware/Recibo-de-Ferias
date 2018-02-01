@@ -528,10 +528,10 @@
 			</staticText>
 			<image>
 				<reportElement x="10" y="0" width="124" height="124" uuid="272f7435-162e-4593-bc45-a20421c8dc07"/>
-				<imageExpression><![CDATA["img/logo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["C:\\DattaSystem\\STFolha\\Aviso\\img\\logo.jpg"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="66" y="435" width="41" height="13" uuid="58fafdde-cb4f-4e84-9472-462681c87b8f"/>
+				<reportElement x="66" y="434" width="41" height="13" uuid="58fafdde-cb4f-4e84-9472-462681c87b8f"/>
 				<textFieldExpression><![CDATA[$F{total_faltas}]]></textFieldExpression>
 			</textField>
 			<staticText>

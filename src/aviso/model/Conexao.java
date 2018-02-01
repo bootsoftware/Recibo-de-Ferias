@@ -2,15 +2,13 @@
 // Home Page:  http://www.neshkov.com/dj.html - Check often for new version!
 // Decompiler options: packimports(3) 
 // Source File Name:   Conexao.java
-
 package aviso.model;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
 
-public class Conexao
-{
-    
+public class Conexao {
+
     public static Connection con = null;
     public static String status = null;
     public static String local_servidor;
@@ -19,48 +17,35 @@ public class Conexao
     public static String local_senha;
     public static String local_user;
 
-    public Conexao()
-    {
+    public Conexao() {
     }
-        public static String abrirConexao()
-    {
+
+    public static String abrirConexao() {
         status = "Falha na conex\343o.";
-        try
-        {
+        try {
             Class.forName("org.firebirdsql.jdbc.FBDriver");
-            con = DriverManager.getConnection("jdbc:firebirdsql:"+ local_servidor+"/"+ local_porta +":"+ local_banco ,local_user, local_senha);
-            System.out.println(con.getMetaData().toString());
+            con = DriverManager.getConnection("jdbc:firebirdsql:" + local_servidor + "/" + local_porta + ":" + local_banco, local_user, local_senha);
             status = "Conectado com sucesso.";
-        }
-        catch(ClassNotFoundException excUm)
-        {
+        } catch (ClassNotFoundException excUm) {
             excUm.printStackTrace();
-        }
-        catch(SQLException excDois)
-        {
+        } catch (SQLException excDois) {
             JOptionPane.showMessageDialog(null, "Nome ou IP do servidor est\341 errado! \n Por favor corrija o erro e tente novamente.", "Erro Na Conex\343o Com Servidor", 0);
             excDois.printStackTrace();
         }
         return status;
     }
 
-    public static String testarConexao()
-    {
+    public static String testarConexao() {
         status = "Falha na conex\343o.";
         fecharConexao();
-        try
-        {
+        try {
             Class.forName("org.firebirdsql.jdbc.FBDriver");
-            con = DriverManager.getConnection("jdbc:firebirdsql:"+ local_servidor+"/"+ local_porta +":"+ local_banco ,"sysdba", "masterkey");
-             JOptionPane.showMessageDialog(null, "Conectado com Sucesso!", "Teste de Conex\343o Com Servidor", 1);
+            con = DriverManager.getConnection("jdbc:firebirdsql:" + local_servidor + "/" + local_porta + ":" + local_banco, "sysdba", "masterkey");
+            JOptionPane.showMessageDialog(null, "Conectado com Sucesso!", "Teste de Conex\343o Com Servidor", 1);
             status = "Conectado com sucesso.";
-        }
-        catch(ClassNotFoundException excUm)
-        {
+        } catch (ClassNotFoundException excUm) {
             excUm.printStackTrace();
-        }
-        catch(SQLException excDois)
-        {
+        } catch (SQLException excDois) {
             JOptionPane.showMessageDialog(null, "Nome ou IP do servidor est\341 errado! \n Por favor corrija o erro e tente novamente.", "Teste de Conex\343o Com Servidor", 0);
             excDois.printStackTrace();
         }
@@ -68,21 +53,15 @@ public class Conexao
         return status;
     }
 
-    public static String fecharConexao()
-    {
+    public static String fecharConexao() {
         status = "Falha ao finalizar conex\343o.";
-        try
-        {
+        try {
             con = null;
             status = "Conex\343o finalizada com sucesso.";
-        }
-        catch(Exception exc)
-        {
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
         return status;
     }
-
-   
 
 }

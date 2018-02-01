@@ -9,6 +9,7 @@ import aviso.model.Conexao;
 import aviso.model.Extenso;
 import aviso.model.Gerar_Relatorio;
 import aviso.model.Servidor;
+import aviso.utilitarios.FuncoesUtils;
 import aviso.utilitarios.Mensagens;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,14 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
-import java.text.Normalizer;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.text.MaskFormatter;
 import net.sf.jasperreports.engine.JRException;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -377,22 +373,6 @@ public class TelaInicial extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(363, 378));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
- private static String format(String pattern, Object value) {
-        try {
-            MaskFormatter mask = new MaskFormatter(pattern);
-            mask.setValueContainsLiteralCharacters(false);
-            return mask.valueToString(value);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static String limpaCaracteres(String palavra) {
-        String aux = "";
-        aux = Normalizer.normalize(palavra, java.text.Normalizer.Form.NFD);
-        aux = aux.replaceAll("[^\\p{ASCII}]", "");
-        return aux;
-    }
 
     public void gerar_arquivo_manual() {
         String total_falta = "";
@@ -417,7 +397,7 @@ public class TelaInicial extends javax.swing.JFrame {
         DateFormat formato_full = DateFormat.getDateInstance(1);
         d_emissao = txt_data_emissao.getDate();
         String emissao = formato_full.format(d_emissao);
-        emissao = limpaCaracteres(emissao.toUpperCase());
+        emissao = FuncoesUtils.limpaCaracteres(emissao.toUpperCase());
         aquisicao_inicial = data_aquisicao_inicial.getText();
         aquisicao_final = data_aquisicao_final.getText();
         gozo_inicial = data_gozo_inicial.getText();
@@ -433,7 +413,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 cnpf = rs.getString("cnpf");
                 nome_cargo = rs.getString("nome_cargo");
             }
-            cnpf = format("###.###.###-##", cnpf);
+            cnpf = FuncoesUtils.format("###.###.###-##", cnpf);
             String sql_pesquisar_empresa = " select e.nome, e.cnpj, e.cidade, e.uf from empresa  e";
             for (ResultSet rs_empresa = stmt.executeQuery(sql_pesquisar_empresa); rs_empresa.next();) {
                 nome_empresa = rs_empresa.getString("nome");
@@ -442,7 +422,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 uf = rs_empresa.getString("uf");
             }
 
-            cnpj_empresa = format("##.###.###/####-##", cnpj_empresa);
+            cnpj_empresa = FuncoesUtils.format("##.###.###/####-##", cnpj_empresa);
             String sql_pesquisar_valor_recibo = (new StringBuilder()).append("select\nv.valor\nfrom variavel v\njoin provento p on p.codigo = v.provento\nwhere ((v.provento = 18 or v.provento = 47) and v.ano = ").append(txt_ano.getText()).append(" and v.mes = ").append(txt_mes.getText()).append(" and v.matricula = ").append(txt_matricula.getText()).append(")").toString();
             for (ResultSet rs_recibo = stmt.executeQuery(sql_pesquisar_valor_recibo);
                     rs_recibo.next();) {
@@ -589,7 +569,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txt_matriculaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_matriculaKeyReleased
-        // TODO add your handling code here:
+       
         try {
             Conexao.abrirConexao();
             Statement stmt = Conexao.con.createStatement();
@@ -625,72 +605,8 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_data_aquisicao_finalKeyReleased
 
     private void data_aquisicao_finalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_data_aquisicao_finalFocusLost
-        // TODO add your handling code here:
-        
-     String faltas = Servidor.faltas(txt_Faltas.getText(), data_aquisicao_inicial.getText(), data_aquisicao_final.getText(),txt_matricula.getText());
-      txt_Faltas.setText(faltas);
-      /*  
-        if (txt_Faltas.getText().trim().equals("")) {
-            String total_falta = "";
-            String mes_inicio = "";
-            String data_ano_inicio = "";
-            String mes_fim = "";
-            String data_ano_fim = "";
-            String matricula = "";
-            String messagem = "";
-
-            mes_inicio = data_aquisicao_inicial.getText().substring(3, 5);
-            data_ano_inicio = data_aquisicao_inicial.getText().substring(6, 10);
-            if (mes_inicio.trim().equals("")) {
-                messagem = "Data inicio de aquisição inválida!";
-            }
-            data_ano_fim = data_aquisicao_final.getText().substring(6, 10);
-            mes_fim = data_aquisicao_final.getText().substring(3, 5);
-
-            if (mes_fim.trim().equals("")) {
-                messagem = messagem + "\nData fim de aquisição inválida!";
-            }
-
-            if (!(messagem.trim().equals(""))) {
-                Mensagens.mensagem_tela("Erro data", messagem, "erro");
-                return;
-            }
-
-            matricula = txt_matricula.getText();
-
-            System.out.println("mes ini: " + mes_inicio);
-            System.out.println("ano ini: " + data_ano_inicio);
-            System.out.println("mes fim: " + mes_fim);
-            System.out.println("ano fim: " + data_ano_fim);
-
-            Conexao.abrirConexao();
-            Statement stmt;
-            try {
-                stmt = Conexao.con.createStatement();
-                String sql_pesquisar_falta = (new StringBuilder())
-                        .append("select SUM(V.referencia)as falta FROM variavel V WHERE V.provento = 501 AND ((ANO >= ")
-                        .append(data_ano_inicio)
-                        .append(" AND MES >=")
-                        .append(mes_inicio)
-                        .append(") AND (ANO <= ")
-                        .append(data_ano_fim)
-                        .append(" AND MES <=")
-                        .append(mes_fim)
-                        .append(")) AND  v.matricula =")
-                        .append(matricula).toString();
-                System.out.println(sql_pesquisar_falta);
-
-                for (ResultSet rs_falta = stmt.executeQuery(sql_pesquisar_falta);
-                        rs_falta.next();) {
-                    total_falta = rs_falta.getString("falta");
-
-                }
-                txt_Faltas.setText(total_falta);
-                            } catch (SQLException ex) {
-                Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }*/
-
+        String faltas = Servidor.faltas(txt_Faltas.getText(), data_aquisicao_inicial.getText(), data_aquisicao_final.getText(), txt_matricula.getText());
+        txt_Faltas.setText(faltas);
     }//GEN-LAST:event_data_aquisicao_finalFocusLost
 
     private void data_gozo_finalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_data_gozo_finalActionPerformed

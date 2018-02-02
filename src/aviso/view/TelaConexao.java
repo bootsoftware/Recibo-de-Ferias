@@ -5,7 +5,7 @@
  */
 package aviso.view;
 
-import aviso.model.Conexao;
+import aviso.control.Conexao;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;

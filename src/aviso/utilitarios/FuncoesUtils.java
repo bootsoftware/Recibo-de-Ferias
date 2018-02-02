@@ -9,7 +9,13 @@ import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.text.MaskFormatter;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
@@ -61,5 +67,26 @@ public class FuncoesUtils {
             retorno = false;
         }
         return retorno;
+    }
+
+    public static DateTime dataSeparada(String data) {
+        DateTime data_formato = null;
+
+        if (data.equals("")) {
+            Date data_hoje = new Date();
+            data = data_formato.toString("dd/MM/yyyy");
+        }
+
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        df.setLenient(false);
+
+        try {
+            df.parse(data);
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+            data_formato = formatter.parseDateTime(data);
+        } catch (ParseException ex) {
+            Mensagens.mensagem_tela("Erro Data!", "A data digita é Inválida", "erro");
+        }
+        return data_formato;
     }
 }

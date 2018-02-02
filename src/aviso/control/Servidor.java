@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aviso.model;
+package aviso.control;
 
 import aviso.utilitarios.FuncoesUtils;
 import aviso.utilitarios.Mensagens;

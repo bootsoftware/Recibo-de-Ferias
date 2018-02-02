@@ -3,17 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aviso.model;
+package aviso.control;
 
+import aviso.utilitarios.FuncoesUtils;
 import aviso.view.TelaConexao;
 import aviso.view.TelaInicial;
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 /**
  *
@@ -75,6 +81,11 @@ public class Aviso {
         TelaInicial telaic = new TelaInicial();
         telaic.setLocationRelativeTo(null);
         telaic.setVisible(true);
+        
+        DateTime date = FuncoesUtils.dataSeparada("01/03/2013");
+        
+        
+        System.out.println(" Ano " +date.getYear()+" mes " + date.getMonthOfYear());
 
     }
 }

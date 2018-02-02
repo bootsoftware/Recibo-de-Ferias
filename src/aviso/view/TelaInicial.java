@@ -5,10 +5,10 @@
  */
 package aviso.view;
 
-import aviso.model.Conexao;
-import aviso.model.Extenso;
-import aviso.model.Gerar_Relatorio;
-import aviso.model.Servidor;
+import aviso.control.Conexao;
+import aviso.control.Extenso;
+import aviso.control.Gerar_Relatorio;
+import aviso.control.Servidor;
 import aviso.utilitarios.FuncoesUtils;
 import aviso.utilitarios.Mensagens;
 import java.io.File;

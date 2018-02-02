@@ -2,7 +2,7 @@
 // Home Page:  http://www.neshkov.com/dj.html - Check often for new version!
 // Decompiler options: packimports(3) 
 // Source File Name:   Extenso.java
-package aviso.model;
+package aviso.control;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

@@ -83,7 +83,8 @@ public class FuncoesUtils {
             DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
             data_formato = formatter.parseDateTime(data);
         } catch (ParseException ex) {
-            Mensagens.mensagem_tela("Erro Data!", "A data digita é Inválida", "erro");
+            throw new ArithmeticException("Divisor não pode ser zero");
+           // Mensagens.mensagem_tela("Erro Data!", "A data digita é Inválida", "erro");
         }
         return data_formato;
     }

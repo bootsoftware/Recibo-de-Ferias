@@ -82,10 +82,10 @@ public class Aviso {
         telaic.setLocationRelativeTo(null);
         telaic.setVisible(true);
         
-        DateTime date = FuncoesUtils.dataSeparada("01/03/2013");
+        DateTime date = FuncoesUtils.dataSeparada("29/02/2018");
         
         
-        System.out.println(" Ano " +date.getYear()+" mes " + date.getMonthOfYear());
+        System.out.println(" Ano " +date.getYear()+" mes " + date.getMonthOfYear()+ " dia "+ date.getDayOfMonth());
 
     }
 }

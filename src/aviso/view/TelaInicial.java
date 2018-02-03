@@ -8,6 +8,7 @@ package aviso.view;
 import aviso.control.Conexao;
 import aviso.control.Extenso;
 import aviso.control.Gerar_Relatorio;
+import aviso.model.Servidor_Model;
 import aviso.control.Servidor;
 import aviso.utilitarios.FuncoesUtils;
 import aviso.utilitarios.Mensagens;
@@ -414,6 +415,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 nome_cargo = rs.getString("nome_cargo");
             }
             cnpf = FuncoesUtils.format("###.###.###-##", cnpf);
+            
             String sql_pesquisar_empresa = " select e.nome, e.cnpj, e.cidade, e.uf from empresa  e";
             for (ResultSet rs_empresa = stmt.executeQuery(sql_pesquisar_empresa); rs_empresa.next();) {
                 nome_empresa = rs_empresa.getString("nome");
@@ -421,8 +423,8 @@ public class TelaInicial extends javax.swing.JFrame {
                 cidade = rs_empresa.getString("cidade");
                 uf = rs_empresa.getString("uf");
             }
-
             cnpj_empresa = FuncoesUtils.format("##.###.###/####-##", cnpj_empresa);
+            
             String sql_pesquisar_valor_recibo = (new StringBuilder()).append("select\nv.valor\nfrom variavel v\njoin provento p on p.codigo = v.provento\nwhere ((v.provento = 18 or v.provento = 47) and v.ano = ").append(txt_ano.getText()).append(" and v.mes = ").append(txt_mes.getText()).append(" and v.matricula = ").append(txt_matricula.getText()).append(")").toString();
             for (ResultSet rs_recibo = stmt.executeQuery(sql_pesquisar_valor_recibo);
                     rs_recibo.next();) {
@@ -569,22 +571,15 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txt_matriculaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_matriculaKeyReleased
-       
-        try {
-            Conexao.abrirConexao();
-            Statement stmt = Conexao.con.createStatement();
-            String sql_pesquisar = (new StringBuilder()).append("select F.nome from FUNCIONARIO F where F.CODIGO = ").append(txt_matricula.getText()).append("").toString();
-            for (ResultSet rs = stmt.executeQuery(sql_pesquisar); rs.next();
-                    txt_nome_funcionario.setText(rs.getString("nome")));
 
-        } catch (Exception exception) {
+        Servidor_Model servidor = new Servidor_Model();
+        servidor.ServidorBuscarNome(txt_matricula.getText());
+        txt_nome_funcionario.setText(servidor.getNome());
 
-        }
     }//GEN-LAST:event_txt_matriculaKeyReleased
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        // TODO add your handling code here:
+
         Date data_emissao = new Date();
         txt_data_emissao.setDate(data_emissao);
         DateTime dateTime = new DateTime();
@@ -605,6 +600,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_data_aquisicao_finalKeyReleased
 
     private void data_aquisicao_finalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_data_aquisicao_finalFocusLost
+        
         String faltas = Servidor.faltas(txt_Faltas.getText(), data_aquisicao_inicial.getText(), data_aquisicao_final.getText(), txt_matricula.getText());
         txt_Faltas.setText(faltas);
     }//GEN-LAST:event_data_aquisicao_finalFocusLost

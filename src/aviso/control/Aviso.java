@@ -5,21 +5,15 @@
  */
 package aviso.control;
 
-import aviso.utilitarios.FuncoesUtils;
+import aviso.utilitarios.Mensagens;
 import aviso.view.TelaConexao;
 import aviso.view.TelaInicial;
 import java.io.File;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import javax.swing.JOptionPane;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
 
 /**
  *
@@ -29,7 +23,6 @@ public class Aviso {
 
     public static void lerXml() throws JDOMException, IOException {
 
-        // File file = null;
         File file = new File((new StringBuilder()).append(System.getProperty("user.dir")).append("\\aviso.cfg").toString());
 
         if (file.exists()) {
@@ -44,7 +37,7 @@ public class Aviso {
             Conexao.local_user = mural.getChildText("user");
 
         } else {
-            JOptionPane.showMessageDialog(null, "Arquivo 'aviso.cfg' não configurado!\nPor favor configure a conexão!");
+            Mensagens.mensagem_tela("Erro na Conexão!", "Arquivo 'aviso.cfg' não configurado!\nPor favor configure a conexão!", "Aviso");
         }
     }
 
@@ -60,32 +53,21 @@ public class Aviso {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaConexao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaConexao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaConexao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaConexao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         try {
             lerXml();
         } catch (JDOMException ex) {
-            System.out.println("erro xml");
+
         } catch (IOException ex) {
-            System.out.println("erro arquivo");
+
         }
 
         TelaInicial telaic = new TelaInicial();
         telaic.setLocationRelativeTo(null);
         telaic.setVisible(true);
-        
-        DateTime date = FuncoesUtils.dataSeparada("29/02/2018");
-        
-        
-        System.out.println(" Ano " +date.getYear()+" mes " + date.getMonthOfYear()+ " dia "+ date.getDayOfMonth());
 
     }
 }

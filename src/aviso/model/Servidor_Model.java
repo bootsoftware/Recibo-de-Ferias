@@ -25,22 +25,23 @@ public class Servidor_Model {
     private String valor_recibo;
     private String mes_recibo;
     private String ano_recibo;
+    private String faltas;
 
     public Servidor_Model() {
 
     }
 
     @SuppressWarnings("empty-statement")
-    public void ServidorBuscarNome(String matricula) {
+    public void servidorBuscarNome() {
 
         try {
             Conexao.abrirConexao();
             Statement stmt = Conexao.con.createStatement();
             String sql_pesquisar = (new StringBuilder()).append("select F.nome from FUNCIONARIO F where F.CODIGO = ")
-                    .append(matricula)
+                    .append(getMatricula())
                     .append("").toString();
             for (ResultSet rs = stmt.executeQuery(sql_pesquisar); rs.next();
-                    this.setNome(rs.getString("nome")));
+                    setNome(rs.getString("nome")));
             Conexao.fecharConexao();
 
         } catch (SQLException exception) {
@@ -48,16 +49,41 @@ public class Servidor_Model {
         }
     }
 
-    void servidorDados() throws SQLException {
+    public void servidorBuscarFaltas(String mes_inicio, String data_ano_inicio, String mes_fim, String data_ano_fim) {
+        Conexao.abrirConexao();
+        Statement stmt;
+        try {
+            stmt = Conexao.con.createStatement();
+            String sql_pesquisar_falta = (new StringBuilder())
+                    .append("select SUM(V.referencia)as falta FROM variavel V WHERE V.provento = 501 AND ((ANO >= ")
+                    .append(data_ano_inicio)
+                    .append(" AND MES >=")
+                    .append(mes_inicio)
+                    .append(") AND (ANO <= ")
+                    .append(data_ano_fim)
+                    .append(" AND MES <=")
+                    .append(mes_fim)
+                    .append(")) AND  v.matricula =")
+                    .append(this.getMatricula()).toString();
+
+            for (ResultSet rs_falta = stmt.executeQuery(sql_pesquisar_falta);
+                    rs_falta.next();) {
+                setFaltas(rs_falta.getString("falta"));
+
+            }
+        } catch (SQLException ex) {
+
+        }
+    }
+
+    public void servidorBuscarDados() {
         try {
             Conexao.abrirConexao();
             Statement stmt = Conexao.con.createStatement();
-            String sql_pesquisar = (new StringBuilder()).append("select\nf.codigo as matricula,\nf.nome,\nf.cnpf,\nc.nome as nome_cargo\nfrom funcionario f\njoin cargo c on c.codigo = f.codigo_cargo\nwhere f.codigo = ")
-                    .append(getMatricula()).append("").toString();
+            String sql_pesquisar = (new StringBuilder()).append("select\nf.cnpf,\nc.nome as nome_cargo\nfrom funcionario f\njoin cargo c on c.codigo = f.codigo_cargo\nwhere f.codigo = ")
+                    .append(this.getMatricula()).append("").toString();
             for (ResultSet rs = stmt.executeQuery(sql_pesquisar);
                     rs.next();) {
-                setNome(rs.getString("nome"));
-                setMatricula(rs.getString("matricula"));
                 setCnpf(rs.getString("cnpf"));
                 setNome_cargo(rs.getString("nome_cargo"));
                 Conexao.fecharConexao();
@@ -88,7 +114,7 @@ public class Servidor_Model {
         }
     }
 
-   /* void servidorBuscaVariavel() {
+    /* void servidorBuscaVariavel() {
         try {
             Conexao.abrirConexao();
             Statement stmt = Conexao.con.createStatement();
@@ -124,8 +150,7 @@ public class Servidor_Model {
 
         }
     }
-    */
-
+     */
     /**
      * @return the matricula
      */
@@ -222,6 +247,20 @@ public class Servidor_Model {
      */
     public void setAno_recibo(String ano_recibo) {
         this.ano_recibo = ano_recibo;
+    }
+
+    /**
+     * @return the faltas
+     */
+    public String getFaltas() {
+        return faltas;
+    }
+
+    /**
+     * @param faltas the faltas to set
+     */
+    public void setFaltas(String faltas) {
+        this.faltas = faltas;
     }
 
 }

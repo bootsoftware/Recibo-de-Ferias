@@ -8,8 +8,8 @@ package aviso.view;
 import aviso.control.Conexao;
 import aviso.control.Extenso;
 import aviso.control.Gerar_Relatorio;
-import aviso.model.Servidor_Model;
 import aviso.control.Servidor;
+//import aviso.model.Servidor_Model;
 import aviso.utilitarios.FuncoesUtils;
 import aviso.utilitarios.Mensagens;
 import java.io.File;
@@ -35,11 +35,14 @@ import org.joda.time.DateTime;
  */
 public class TelaInicial extends javax.swing.JFrame {
 
+    Servidor servidor;
+
     /**
      * Creates new form TelaInicial
      */
     public TelaInicial() {
         initComponents();
+        servidor = new Servidor();
     }
 
     /**
@@ -161,7 +164,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel2.setText("Ano");
 
-        bt_imprimirtodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/printer.png"))); // NOI18N
+        bt_imprimirtodos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/imagens/printer.png"))); // NOI18N
         bt_imprimirtodos.setText("Imprimir");
         bt_imprimirtodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,7 +174,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         txt_ano.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/delete.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/imagens/delete.png"))); // NOI18N
         jButton2.setText("Fechar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,7 +185,7 @@ public class TelaInicial extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("Aviso de Férias");
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/process_info.png"))); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/imagens/database_process.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -376,6 +379,157 @@ public class TelaInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void gerar_arquivo_manual() {
+
+        /*   try {
+            Conexao.abrirConexao();
+            
+            Statement stmt = Conexao.con.createStatement();
+            String sql_pesquisar = (new StringBuilder()).append("select\nf.codigo as matricula,\nf.nome,\nf.cnpf,\nc.nome as nome_cargo\nfrom funcionario f\njoin cargo c on c.codigo = f.codigo_cargo\nwhere f.codigo = ").append(txt_matricula.getText()).append("").toString();
+            for (ResultSet rs = stmt.executeQuery(sql_pesquisar); rs.next();) {
+                nome = rs.getString("nome");
+                matricula = rs.getString("matricula");
+                cnpf = rs.getString("cnpf");
+                nome_cargo = rs.getString("nome_cargo");
+            }
+            cnpf = FuncoesUtils.format("###.###.###-##", cnpf);
+            
+            String sql_pesquisar_empresa = " select e.nome, e.cnpj, e.cidade, e.uf from empresa  e";
+            for (ResultSet rs_empresa = stmt.executeQuery(sql_pesquisar_empresa); rs_empresa.next();) {
+                nome_empresa = rs_empresa.getString("nome");
+                cnpj_empresa = rs_empresa.getString("cnpj");
+                cidade = rs_empresa.getString("cidade");
+                uf = rs_empresa.getString("uf");
+            }
+            cnpj_empresa = FuncoesUtils.format("##.###.###/####-##", cnpj_empresa);
+            
+            String sql_pesquisar_valor_recibo = (new StringBuilder()).append("select\nv.valor\nfrom variavel v\njoin provento p on p.codigo = v.provento\nwhere ((v.provento = 18 or v.provento = 47) and v.ano = ").append(txt_ano.getText()).append(" and v.mes = ").append(txt_mes.getText()).append(" and v.matricula = ").append(txt_matricula.getText()).append(")").toString();
+            for (ResultSet rs_recibo = stmt.executeQuery(sql_pesquisar_valor_recibo);
+                    rs_recibo.next();) {
+                valor_recibo = rs_recibo.getString("valor");
+            }
+            if (!(valor_recibo.isEmpty())) {
+
+                Extenso entenso_valor_recibo = new Extenso(Double.parseDouble(valor_recibo));
+                valor_recibo_extenso = entenso_valor_recibo.toString();
+                Element aviso = new Element("Aviso_Ferias");
+                Document documento = new Document(aviso);
+                Element servidor = new Element("Servidor");
+                Element nome_servidor = new Element("nome_servidor");
+                nome_servidor.setText(nome);
+                Element matricula_servidor = new Element("matricula");
+                matricula_servidor.setText(matricula);
+                Element total_faltas = new Element("total_faltas");
+                if (txt_Faltas.getText().equals("")) {
+                    total_faltas.setText("0.00");
+                } else {
+                    total_faltas.setText(txt_Faltas.getText());
+                }
+                Element cpf_servidor = new Element("cnpf");
+                cpf_servidor.setText(cnpf);
+                Element cargo = new Element("nome_cargo");
+                cargo.setText(nome_cargo);
+                Element data_emissao_xml = new Element("data_emissao");
+                data_emissao_xml.setText(emissao);
+                Element data_aquisicao_inicial_xml = new Element("aquisicao_inicial");
+                data_aquisicao_inicial_xml.setText(aquisicao_inicial);
+                Element data_aquisicao_final_xml = new Element("aquisicao_final");
+                data_aquisicao_final_xml.setText(aquisicao_final);
+                Element data_gozo_inicial_xml = new Element("gozo_inicial");
+                data_gozo_inicial_xml.setText(gozo_inicial);
+                Element data_gozo_final_xml = new Element("gozo_final");
+                data_gozo_final_xml.setText(gozo_final);
+                Element data_retorno_xml = new Element("data_retorno");
+                data_retorno_xml.setText(retorno);
+                Element valor_recibo_extenso_xml = new Element("valor_recibo_extenso");
+                valor_recibo_extenso_xml.setText(valor_recibo_extenso.toUpperCase());
+                Element valor_recibo_xml = new Element("valor_recibo");
+                valor_recibo_xml.setText(valor_recibo);
+                Element nome_empresa_xml = new Element("nome_empresa");
+                nome_empresa_xml.setText("PREFEITURA MUNICIPAL DE AUGUSTINOPOLIS");
+                Element cnpj_empresa_xml = new Element("cnpj_empresa");
+                cnpj_empresa_xml.setText(cnpj_empresa);
+                Element cidade_xml = new Element("cidade");
+                cidade_xml.setText("AUGUSTINOPOLIS");
+                Element uf_xml = new Element("uf");
+                uf_xml.setText(uf);
+                String sql_tabela = (new StringBuilder()).append("select\nv.matricula,\nv.valor,\nIIF(v.referencia is null, '-',v.referencia) as referencia,\np.codigo as cod_provento,\np.nome as nome_provento\n\nfrom variavel v\njoin provento p on p.codigo = v.provento\nwhere v.ano = ").append(txt_ano.getText()).append(" and v.mes = ").append(txt_mes.getText()).append(" and v.matricula = ").append(matricula).append(" and v.sequencia <> 13 order by p.codigo").toString();
+                ResultSet rs_tabela = stmt.executeQuery(sql_tabela);
+                Element proventos = new Element("Proventos");
+                int cod_prov = 0;
+                double des = 0.0D;
+                double pro = 0.0D;
+                double liq = 0.0D;
+                Element provento;
+                for (; rs_tabela.next(); proventos.addContent(provento)) {
+                    provento = new Element("provento");
+                    cod_prov = Integer.parseInt(rs_tabela.getString("cod_provento"));
+                    provento.setAttribute("codigo", String.valueOf(cod_prov));
+                    provento.setAttribute("nome", rs_tabela.getString("nome_provento"));
+                    provento.setAttribute("ref", rs_tabela.getString("referencia"));
+                    if (cod_prov > 500) {
+                        des += Double.parseDouble(rs_tabela.getString("valor"));
+                        provento.setAttribute("descontos", rs_tabela.getString("valor"));
+                    } else {
+                        pro += Double.parseDouble(rs_tabela.getString("valor"));
+                        provento.setAttribute("redimento", rs_tabela.getString("valor"));
+                    }
+                }
+
+                liq = pro - des;
+                Element total_descontos_xml = new Element("total_descontos");
+                total_descontos_xml.setText(String.valueOf(des));
+                Element total_provento_xml = new Element("total_porvento");
+                total_provento_xml.setText(String.valueOf(pro));
+                Element total_liquido_xml = new Element("total_liquido");
+                total_liquido_xml.setText(String.valueOf(liq));
+                stmt.close();
+                Conexao.fecharConexao();
+                servidor.addContent(nome_servidor);
+                servidor.addContent(matricula_servidor);
+                servidor.addContent(cpf_servidor);
+                servidor.addContent(cargo);
+                servidor.addContent(data_emissao_xml);
+                servidor.addContent(data_aquisicao_inicial_xml);
+                servidor.addContent(data_aquisicao_final_xml);
+                servidor.addContent(data_gozo_inicial_xml);
+                servidor.addContent(data_gozo_final_xml);
+                servidor.addContent(data_retorno_xml);
+                servidor.addContent(valor_recibo_extenso_xml);
+                servidor.addContent(valor_recibo_xml);
+                servidor.addContent(nome_empresa_xml);
+                servidor.addContent(cnpj_empresa_xml);
+                servidor.addContent(cidade_xml);
+                servidor.addContent(uf_xml);
+                servidor.addContent(total_provento_xml);
+                servidor.addContent(total_descontos_xml);
+                servidor.addContent(total_liquido_xml);
+                servidor.addContent(total_faltas);
+                servidor.addContent(proventos);
+                aviso.addContent(servidor);
+                XMLOutputter xout = new XMLOutputter();
+                FileWriter arquivo = new FileWriter(new File((new StringBuilder()).append(System.getProperty("user.dir") + "\\aviso-").append(matricula).append(".xml").toString()));
+                xout.output(documento, arquivo);
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro!\nConfigure as remunerações de férias!");
+                return;
+            }
+
+        } catch (SQLException ex) {
+            //  Logger.getLogger(avisoferias / tela.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            //  Logger.getLogger(avisoferias / tela.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Gerar_Relatorio.gerar_aviso(txt_matricula.getText());
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(aviso / tela.getName()).log(Level.SEVERE, null, ex);
+            //JOptionPane.showMessageDialog(rootPane, ex);
+        } catch (JRException ex) {
+            //  Logger.getLogger(avisoferias / tela.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+         */
+ /* public void gerar_arquivo_manual() {
         String total_falta = "";
         String matricula = "";
         String nome = "";
@@ -551,6 +705,7 @@ public class TelaInicial extends javax.swing.JFrame {
             //  Logger.getLogger(avisoferias / tela.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }*/
     }
 
 
@@ -561,6 +716,8 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void bt_imprimirtodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_imprimirtodosActionPerformed
         // TODO add your handling code here:
+        servidor.buscarDados();
+        servidor.lerDadosSercidor();
         gerar_arquivo_manual();
     }//GEN-LAST:event_bt_imprimirtodosActionPerformed
 
@@ -572,8 +729,8 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void txt_matriculaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_matriculaKeyReleased
 
-        Servidor_Model servidor = new Servidor_Model();
-        servidor.ServidorBuscarNome(txt_matricula.getText());
+        servidor.setMatricula(txt_matricula.getText());
+        servidor.buscarNome();
         txt_nome_funcionario.setText(servidor.getNome());
 
     }//GEN-LAST:event_txt_matriculaKeyReleased
@@ -600,9 +757,22 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_data_aquisicao_finalKeyReleased
 
     private void data_aquisicao_finalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_data_aquisicao_finalFocusLost
-        
-        String faltas = Servidor.faltas(txt_Faltas.getText(), data_aquisicao_inicial.getText(), data_aquisicao_final.getText(), txt_matricula.getText());
-        txt_Faltas.setText(faltas);
+
+        if (!FuncoesUtils.dataMaior(data_aquisicao_inicial.getText(), data_aquisicao_final.getText())) {
+            servidor.setData_aquisicao_inicial(data_aquisicao_inicial.getText());
+            servidor.setData_aquisicao_final(data_aquisicao_final.getText());
+
+            if (txt_Faltas.getText().isEmpty()) {
+                servidor.faltasPeriodo();
+                txt_Faltas.setText(servidor.getFaltas());
+            }
+        } else {
+            Mensagens.mensagem_tela("Erro Data de Aquisição!", "A data de de aquisição inicial deve ser maior que a data de aquisição final!", "erro");
+        }
+
+        /* servidor.setData_aquisicao_inicial(data_aquisicao_inicial.getText());
+        servidor.setData_aquisicao_final(data_aquisicao_final.getText());
+        txt_Faltas.setText(servidor.getFaltas());*/
     }//GEN-LAST:event_data_aquisicao_finalFocusLost
 
     private void data_gozo_finalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_data_gozo_finalActionPerformed

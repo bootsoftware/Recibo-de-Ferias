@@ -6,6 +6,7 @@
 package aviso.model;
 
 import aviso.control.Conexao;
+import aviso.control.Conexao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;

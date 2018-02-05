@@ -7,9 +7,6 @@ package aviso.control;
 
 import aviso.model.Servidor_Model;
 import aviso.utilitarios.Mensagens;
-import com.sun.swing.internal.plaf.metal.resources.metal;
-import org.codehaus.groovy.control.messages.Message;
-import org.eclipse.jdt.internal.compiler.util.Messages;
 
 /**
  *
@@ -27,6 +24,7 @@ public class Servidor {
     private String data_aquisicao_inicial;
     private String data_aquisicao_final;
     private String faltas;
+    private Empresa_Model empresa;
 
     public String teste;
 
@@ -61,7 +59,6 @@ public class Servidor {
 
             setNome(model.getNome());
 
-
         } catch (Exception e) {
             Mensagens.mensagem_tela("Erro ao consutar Nome!", "Não foi possível fazer a consulta!\n " + e.getMessage(), "Erro");
         }
@@ -79,7 +76,7 @@ public class Servidor {
             Servidor_Model model = new Servidor_Model();
             model.setMatricula(getMatricula());
             model.servidorBuscarFaltas(mes_inicio, data_ano_inicio, mes_fim, data_ano_fim);
-            
+
             this.setFaltas(model.getFaltas());
 
         } catch (Exception e) {
@@ -92,9 +89,28 @@ public class Servidor {
         Servidor_Model model = new Servidor_Model();
         model.setMatricula(getMatricula());
         model.servidorBuscarDados();
-        
+
         this.setCnpf(model.getCnpf());
         this.setNome_cargo(model.getNome_cargo());
+    }
+
+    public void gerarRelatorio() {
+        Gerar_Relatorio recibo = new Gerar_Relatorio();
+        empresa.empresaDados();
+
+        recibo.setNome(getNome());
+        recibo.setMatricula(getMatricula());
+        recibo.setFaltas(getFaltas());
+        recibo.setCnpf(getCnpf());
+        recibo.setNome_cargo(getNome_cargo());
+        recibo.setAquisicao_inicial(getData_aquisicao_inicial());
+        recibo.setAquisicao_final(getData_aquisicao_final());
+        recibo.setNome_empresa(empresa.getNome_empresa());
+        recibo.setCnpj_empresa(empresa.getCnpj_empresa());
+        recibo.setCidade(empresa.getCidade());
+        recibo.setUf(empresa.getUf());
+
+        recibo.gerar_arquivo_manual();
     }
 
     /**

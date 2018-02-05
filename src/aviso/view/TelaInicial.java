@@ -629,7 +629,8 @@ public class TelaInicial extends javax.swing.JFrame {
                 cidade_xml.setText("AUGUSTINOPOLIS");
                 Element uf_xml = new Element("uf");
                 uf_xml.setText(uf);
-                String sql_tabela = (new StringBuilder()).append("select\nv.matricula,\nv.valor,\nIIF(v.referencia is null, '-',v.referencia) as referencia,\np.codigo as cod_provento,\np.nome as nome_provento\n\nfrom variavel v\njoin provento p on p.codigo = v.provento\nwhere v.ano = ").append(txt_ano.getText()).append(" and v.mes = ").append(txt_mes.getText()).append(" and v.matricula = ").append(matricula).append(" and v.sequencia <> 13 order by p.codigo").toString();
+                
+        String sql_tabela = (new StringBuilder()).append("select\nv.matricula,\nv.valor,\nIIF(v.referencia is null, '-',v.referencia) as referencia,\np.codigo as cod_provento,\np.nome as nome_provento\n\nfrom variavel v\njoin provento p on p.codigo = v.provento\nwhere v.ano = ").append(txt_ano.getText()).append(" and v.mes = ").append(txt_mes.getText()).append(" and v.matricula = ").append(matricula).append(" and v.sequencia <> 13 order by p.codigo").toString();
                 ResultSet rs_tabela = stmt.executeQuery(sql_tabela);
                 Element proventos = new Element("Proventos");
                 int cod_prov = 0;

@@ -1,24 +1,19 @@
 package aviso.control;
 
-import aviso.utilitarios.FuncoesUtils;
-import java.io.File;
+import aviso.model.Gerar_Relatorio_Model;
+import aviso.utilitarios.Mensagens;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.output.XMLOutputter;
 
 public class Gerar_Relatorio {
 
@@ -44,11 +39,12 @@ public class Gerar_Relatorio {
     private String retorno;
     private String valor_recibo;
     private String emissao;
+    private ResultSet rs_tabela;
 
     public Gerar_Relatorio() {
     }
 
-    public static void gerar_aviso(String matricula)
+    public void gerar_aviso(String matricula)
             throws FileNotFoundException, JRException {
         try {
             net.sf.jasperreports.engine.JasperReport jasperReport = null;
@@ -67,37 +63,24 @@ public class Gerar_Relatorio {
             jrv.setLocationRelativeTo(null);
             jrv.setTitle("Datta System Tecnologia - Imprimir Aviso de F\351rias");
             jrv.setIconImage(null);
-        } catch (Exception e) {
+        } catch (JRException e) {
             JOptionPane.showMessageDialog(null, e);
 
         }
     }
 
-    public void gerar_arquivo_manual() {
-
-        //  Date d_emissao = new Date();
-        // DateFormat formato_normal = new SimpleDateFormat("dd/MM/YYYY");
-        // DateFormat formato_full = DateFormat.getDateInstance(1);
-        //  d_emissao = txt_data_emissao.getDate();
-        //   setEmissao(formato_full.format(d_emissao));
-        //  setEmissao(FuncoesUtils.limpaCaracteres(getEmissao().toUpperCase()));
-        // aquisicao_inicial = data_aquisicao_inicial.getText();
-        // aquisicao_final = data_aquisicao_final.getText();
-        //  gozo_inicial = data_gozo_inicial.getText();
-        //  gozo_final = data_gozo_final.getText();
-        //  retorno = txtRetorno.getText();
-        
-        setEmisao("Definir como vou fazer!");
+    public void gerar_arquivo_manual() throws SQLException, IOException {
+        //setEmisao("Definir como vou fazer!");
+        System.out.println(getValor_recibo());
         try {
-
             Extenso entenso_valor_recibo = new Extenso(Double.parseDouble(getValor_recibo()));
             setValor_recibo_extenso(entenso_valor_recibo.toString());
             Element aviso = new Element("Aviso_Ferias");
             Document documento = new Document(aviso);
             Element servidor = new Element("Servidor");
-            Element nome_servidor = new Element(getNome());
+            Element nome_servidor = new Element("nome_servidor");
             nome_servidor.setText(getNome());
-            Element matricula_servidor = new Element(getMatricula());
+            Element matricula_servidor = new Element("matricula_servidor");
             matricula_servidor.setText(getMatricula());
             Element total_faltas = new Element("total_faltas");
             total_faltas.setText(getFaltas());
@@ -130,47 +113,51 @@ public class Gerar_Relatorio {
             Element uf_xml = new Element("uf");
             uf_xml.setText(getUf());
 
-            /*  String sql_tabela = (new StringBuilder()).append("select\nv.matricula,\nv.valor,\nIIF(v.referencia is null, '-',v.referencia) as referencia,\np.codigo as cod_provento,\np.nome as nome_provento\n\nfrom variavel v\njoin provento p on p.codigo = v.provento\nwhere v.ano = ")
-                    .append(getAno()).append(" and v.mes = ")
-                    .append(getMes()).append(" and v.matricula = ")
-                    .append(getMatricula())
-                    .append(" and v.sequencia <> 13 order by p.codigo").toString();
+            Gerar_Relatorio_Model relatorio = new Gerar_Relatorio_Model();
+            relatorio.setMatricula(this.getMatricula());
+            relatorio.setMes(getMes());
+            relatorio.setAno(getAno());
 
-            ResultSet rs_tabela = stmt.executeQuery(sql_tabela);
+            // setRs_tabela(relatorio.getRs_tabela());
+            // relatorio.getProventos();
+            /* List<Proventos> items = relatorio.getProventos();
+            for (Proventos item : items) {
+            System.out.println(item.getCod_prov());
+            }*/
             Element proventos = new Element("Proventos");
             int cod_prov = 0;
             double des = 0.0D;
             double pro = 0.0D;
             double liq = 0.0D;
             Element provento;
-            for (; rs_tabela.next(); proventos.addContent(provento)) {
+
+            List<Proventos> items = relatorio.getProventos();
+            for (Proventos item : items) {
+
                 provento = new Element("provento");
-                cod_prov = Integer.parseInt(rs_tabela.getString("cod_provento"));
-                provento.setAttribute("codigo", St   provento = new Element("provento");
-                cod_prov = Integer.parseInt(rs_tabela.getStriring.valueOf(cod_prov));
-                provento.setAttribute("nome", rs_tabela.getString("nome_provento"));
-                provento.setAttribute("ref", rs_tabela.getString("referencia"));
+                proventos.addContent(provento);
+                cod_prov = Integer.parseInt(item.getCod_prov());
+                provento.setAttribute("codigo", item.getCod_prov());
+                provento.setAttribute("nome", item.getNome_prov());
+                provento.setAttribute("ref", item.getReferencia());
                 if (cod_prov > 500) {
-                    des += Double.parseDouble(rs_tabela.getString("valor"));
-                    provento.setAttribute("descontos", rs_tabela.getString("valor"));
+                    des += Double.parseDouble(item.getValor());
+                    provento.setAttribute("descontos", item.getValor());
                 } else {
-                    pro += Double.parseDouble(rs_tabela.getString("valor"));
-                    provento.setAttribute("redimento", rs_tabela.getString("valor"));
+                    pro += Double.parseDouble(item.getValor());
+                    provento.setAttribute("redimento", item.getValor());
                 }
             }
-           
 
             liq = pro - des;
-             
+
             Element total_descontos_xml = new Element("total_descontos");
             total_descontos_xml.setText(String.valueOf(des));
             Element total_provento_xml = new Element("total_porvento");
             total_provento_xml.setText(String.valueOf(pro));
             Element total_liquido_xml = new Element("total_liquido");
             total_liquido_xml.setText(String.valueOf(liq));
-            stmt.close();
-             */
-            Conexao.fecharConexao();
+
             servidor.addContent(nome_servidor);
             servidor.addContent(matricula_servidor);
             servidor.addContent(cpf_servidor);
@@ -193,48 +180,13 @@ public class Gerar_Relatorio {
             servidor.addContent(total_faltas);
             servidor.addContent(proventos);
             aviso.addContent(servidor);
-            XMLOutputter xout = new XMLOutputter();
-            FileWriter arquivo = new FileWriter(new File((new StringBuilder()).append(System.getProperty("user.dir") + "\\aviso-").append(getMatricula()).append(".xml").toString()));
-            xout.output(documento, arquivo);
-        }else {
-                JOptionPane.showMessageDialog(null, "Erro!\nConfigure as remunerações de férias!");
-                return;
-            }
+
+            relatorio.salvarXml(documento);
+        } catch (Exception e) {
+            Mensagens.mensagem_tela("Erro ao Gerar Relatório", "Favor entrar em contato com o Suporte!\n" + e.getMessage(), "Erro");
+        }
 
     }
-    catch (SQLException ex
-
-    
-    
-    ) {
-            //  Logger.getLogger(avisoferias / tela.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex
-
-    
-    
-
-    
-        ) {
-            //  Logger.getLogger(avisoferias / tela.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            Gerar_Relatorio.gerar_aviso(getMatricula());
-    }
-    catch (FileNotFoundException ex
-
-    
-    
-    ) {
-            //Logger.getLogger(aviso / tela.getName()).log(Level.SEVERE, null, ex);
-            //JOptionPane.showMessageDialog(rootPane, ex);
-        } catch (JRException ex
-
-    
-    
-
-    ) {
-            //  Logger.getLogger(avisoferias / tela.getName()).log(Level.SEVERE, null, ex);
-        }
 
     /**
      * @return the total_falta
@@ -535,6 +487,20 @@ public class Gerar_Relatorio {
      */
     public void setEmisao(String emisao) {
         this.emisao = emisao;
+    }
+
+    /**
+     * @return the rs_tabela
+     */
+    public ResultSet getRs_tabela() {
+        return rs_tabela;
+    }
+
+    /**
+     * @param rs_tabela the rs_tabela to set
+     */
+    public void setRs_tabela(ResultSet rs_tabela) {
+        this.rs_tabela = rs_tabela;
     }
 
 }

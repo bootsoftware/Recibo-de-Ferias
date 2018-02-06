@@ -6,7 +6,6 @@
 package aviso.model;
 
 import aviso.control.Conexao;
-import aviso.control.Conexao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -94,7 +93,7 @@ public class Servidor_Model {
         }
     }
 
-    void servidorValorFerias() {
+   public void servidorValorFerias() {
         try {
             Conexao.abrirConexao();
             Statement stmt = Conexao.con.createStatement();

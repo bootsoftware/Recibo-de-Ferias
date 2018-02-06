@@ -22,6 +22,8 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import org.jdom2.Document;
@@ -716,10 +718,18 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_data_gozo_finalFocusLost
 
     private void bt_imprimirtodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_imprimirtodosActionPerformed
-        // TODO add your handling code here:
+
+        servidor.setMes_recibo(txt_mes.getText());
+        servidor.setAno_recibo(txt_ano.getText());
         servidor.buscarDados();
         servidor.lerDadosSercidor();
-        gerar_arquivo_manual();
+        try {
+            servidor.gerarRelatorio(txt_data_emissao.getDate());
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
     }//GEN-LAST:event_bt_imprimirtodosActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -743,6 +753,7 @@ public class TelaInicial extends javax.swing.JFrame {
         DateTime dateTime = new DateTime();
         txt_ano.setText(dateTime.toString("yyyy"));
         txt_mes.setText(dateTime.toString("MM"));
+
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

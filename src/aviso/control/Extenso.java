@@ -51,7 +51,7 @@ public class Extenso {
     }
 
     public void show() {
-        for (Iterator valores = nro.iterator(); valores.hasNext(); System.out.println(((Integer) valores.next()).intValue()));
+        for (Iterator valores = nro.iterator(); valores.hasNext(); System.out.println(((Number) valores.next()).intValue()));
         System.out.println(toString());
     }
 
@@ -66,12 +66,12 @@ public class Extenso {
 
     public String toString() {
         StringBuffer buf = new StringBuffer();
-        int numero = ((Integer) nro.get(0)).intValue();
+        int numero = ((Number) nro.get(0)).intValue();
         for (int ct = nro.size() - 1; ct > 0; ct--) {
             if (buf.length() > 0 && !ehGrupoZero(ct)) {
                 buf.append(" e ");
             }
-            buf.append(numToString(((Integer) nro.get(ct)).intValue(), ct));
+            buf.append(numToString(((Number) nro.get(ct)).intValue(), ct));
         }
 
         if (buf.length() > 0) {
@@ -82,23 +82,23 @@ public class Extenso {
             if (ehPrimeiroGrupoUm()) {
                 buf.insert(0, "h");
             }
-            if (nro.size() == 2 && ((Integer) nro.get(1)).intValue() == 1) {
+            if (nro.size() == 2 && ((Number) nro.get(1)).intValue() == 1) {
                 buf.append(" real");
             } else {
                 buf.append(" reais");
             }
-            if (((Integer) nro.get(0)).intValue() != 0) {
+            if (((Number) nro.get(0)).intValue() != 0) {
                 buf.append(" e ");
             }
         }
-        if (((Integer) nro.get(0)).intValue() != 0) {
-            buf.append(numToString(((Integer) nro.get(0)).intValue(), 0));
+        if (((Number) nro.get(0)).intValue() != 0) {
+            buf.append(numToString(((Number) nro.get(0)).intValue(), 0));
         }
         return buf.toString();
     }
 
     private boolean ehPrimeiroGrupoUm() {
-        return ((Integer) nro.get(nro.size() - 1)).intValue() == 1;
+        return ((Number) nro.get(nro.size() - 1)).intValue() == 1;
     }
 
     private void addRemainder(int divisor) {
@@ -109,7 +109,7 @@ public class Extenso {
 
     private boolean temMaisGrupos(int ps) {
         for (; ps > 0; ps--) {
-            if (((Integer) nro.get(ps)).intValue() != 0) {
+            if (((Number) nro.get(ps)).intValue() != 0) {
                 return true;
             }
         }
@@ -118,7 +118,7 @@ public class Extenso {
     }
 
     private boolean ehUltimoGrupo(int ps) {
-        return ps > 0 && ((Integer) nro.get(ps)).intValue() != 0 && !temMaisGrupos(ps - 1);
+        return ps > 0 && ((Number) nro.get(ps)).intValue() != 0 && !temMaisGrupos(ps - 1);
     }
 
     private boolean ehUnicoGrupo() {
@@ -130,7 +130,7 @@ public class Extenso {
         }
         boolean hasOne = false;
         for (int i = 3; i < nro.size(); i++) {
-            if (((Integer) nro.get(i)).intValue() == 0) {
+            if (((Number) nro.get(i)).intValue() == 0) {
                 continue;
             }
             if (hasOne) {
@@ -146,7 +146,7 @@ public class Extenso {
         if (ps <= 0 || ps >= nro.size()) {
             return true;
         } else {
-            return ((Integer) nro.get(ps)).intValue() == 0;
+            return ((Number) nro.get(ps)).intValue() == 0;
         }
     }
 

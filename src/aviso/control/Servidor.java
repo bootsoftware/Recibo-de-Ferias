@@ -7,13 +7,20 @@ package aviso.control;
 
 import aviso.model.Servidor_Model;
 import aviso.utilitarios.Mensagens;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
 
 /**
  *
  * @author wanderlei
  */
 public class Servidor {
-
+    
     private String matricula;
     private String nome;
     private String cnpf;
@@ -24,19 +31,19 @@ public class Servidor {
     private String data_aquisicao_inicial;
     private String data_aquisicao_final;
     private String faltas;
-    private Empresa_Model empresa;
-
+    private Empresa_Model empresa = new Empresa_Model();
+    
     public String teste;
-
+    
     public Servidor() {
     }
-
+    
     public Servidor(String matricula) {
         this.matricula = matricula;
     }
-
+    
     public void lerDadosSercidor() {
-
+        
         System.out.println("Matricula " + getMatricula());
         System.out.println("Nome " + getNome());
         System.out.println("Cpf " + getCnpf());
@@ -50,54 +57,59 @@ public class Servidor {
 
         /* System.out.println(get);*/
     }
-
+    
     public void buscarNome() {
         try {
             Servidor_Model model = new Servidor_Model();
             model.setMatricula(getMatricula());
             model.servidorBuscarNome();
-
+            
             setNome(model.getNome());
-
+            
         } catch (Exception e) {
             Mensagens.mensagem_tela("Erro ao consutar Nome!", "Não foi possível fazer a consulta!\n " + e.getMessage(), "Erro");
         }
-
+        
     }
-
+    
     public void faltasPeriodo() {
         try {
             String mes_inicio = data_aquisicao_inicial.substring(3, 5);
             String data_ano_inicio = data_aquisicao_inicial.substring(6, 10);
-
+            
             String data_ano_fim = data_aquisicao_final.substring(6, 10);
             String mes_fim = data_aquisicao_final.substring(3, 5);
-
+            
             Servidor_Model model = new Servidor_Model();
             model.setMatricula(getMatricula());
             model.servidorBuscarFaltas(mes_inicio, data_ano_inicio, mes_fim, data_ano_fim);
-
+            
             this.setFaltas(model.getFaltas());
-
+            
         } catch (Exception e) {
             Mensagens.mensagem_tela("Erro ao consutar Faltas!", "Não foi possível fazer a consulta!\n " + e.getMessage(), "Erro");
-
+            
         }
     }
-
+    
     public void buscarDados() {
         Servidor_Model model = new Servidor_Model();
         model.setMatricula(getMatricula());
         model.servidorBuscarDados();
-
+        model.setMes_recibo(getMes_recibo());
+        model.setAno_recibo(getAno_recibo());
+        model.servidorValorFerias(); 
+        
+        
         this.setCnpf(model.getCnpf());
         this.setNome_cargo(model.getNome_cargo());
+        this.setValor_recibo(model.getValor_recibo());
     }
-
-    public void gerarRelatorio() {
+    
+    public void gerarRelatorio(Date data_emisao) throws SQLException, IOException {
         Gerar_Relatorio recibo = new Gerar_Relatorio();
         empresa.empresaDados();
-
+        
         recibo.setNome(getNome());
         recibo.setMatricula(getMatricula());
         recibo.setFaltas(getFaltas());
@@ -105,12 +117,23 @@ public class Servidor {
         recibo.setNome_cargo(getNome_cargo());
         recibo.setAquisicao_inicial(getData_aquisicao_inicial());
         recibo.setAquisicao_final(getData_aquisicao_final());
+        recibo.setValor_recibo(getValor_recibo());
         recibo.setNome_empresa(empresa.getNome_empresa());
         recibo.setCnpj_empresa(empresa.getCnpj_empresa());
         recibo.setCidade(empresa.getCidade());
         recibo.setUf(empresa.getUf());
-
+        recibo.setMes(getMes_recibo());
+        recibo.setAno(getAno_recibo());
+        recibo.setEmisao(data_emisao.toString());
+        
         recibo.gerar_arquivo_manual();
+        try {
+            recibo.gerar_aviso(getMatricula());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

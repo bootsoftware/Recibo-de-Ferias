@@ -1,6 +1,7 @@
 package aviso.control;
 
 import aviso.model.Gerar_Relatorio_Model;
+import aviso.utilitarios.FuncoesUtils;
 import aviso.utilitarios.Mensagens;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,7 +26,6 @@ public class Gerar_Relatorio {
     private String nome_empresa;
     private String cnpj_empresa;
     private String cidade;
-    private String emisao;
     private String uf;
     private String valor_normal_extenso;
     private String valor_recibo_extenso;
@@ -35,11 +35,10 @@ public class Gerar_Relatorio {
     private String aquisicao_final;
     private String gozo_inicial;
     private String gozo_final;
+    private String data_emissao;
     private String Faltas;
     private String retorno;
     private String valor_recibo;
-    private String emissao;
-    private ResultSet rs_tabela;
 
     public Gerar_Relatorio() {
     }
@@ -85,7 +84,7 @@ public class Gerar_Relatorio {
             Element total_faltas = new Element("total_faltas");
             total_faltas.setText(getFaltas());
             Element cpf_servidor = new Element("cnpf");
-            cpf_servidor.setText(getCnpf());
+            cpf_servidor.setText(FuncoesUtils.format("###.###.###-##", getCnpf()));
             Element cargo = new Element("nome_cargo");
             cargo.setText(getNome_cargo());
             Element data_emissao_xml = new Element("data_emissao");
@@ -107,7 +106,7 @@ public class Gerar_Relatorio {
             Element nome_empresa_xml = new Element("nome_empresa");
             nome_empresa_xml.setText(getNome_empresa());
             Element cnpj_empresa_xml = new Element("cnpj_empresa");
-            cnpj_empresa_xml.setText(getCnpj_empresa());
+            cnpj_empresa_xml.setText(FuncoesUtils.format("##.###.###/####-##", getCnpj_empresa()));
             Element cidade_xml = new Element("cidade");
             cidade_xml.setText(getCidade());
             Element uf_xml = new Element("uf");
@@ -118,12 +117,6 @@ public class Gerar_Relatorio {
             relatorio.setMes(getMes());
             relatorio.setAno(getAno());
 
-            // setRs_tabela(relatorio.getRs_tabela());
-            // relatorio.getProventos();
-            /* List<Proventos> items = relatorio.getProventos();
-            for (Proventos item : items) {
-            System.out.println(item.getCod_prov());
-            }*/
             Element proventos = new Element("Proventos");
             int cod_prov = 0;
             double des = 0.0D;
@@ -472,35 +465,21 @@ public class Gerar_Relatorio {
      * @return the emissao
      */
     public String getEmissao() {
-        return emissao;
+        return getData_emissao();
     }
 
     /**
-     * @return the emisao
+     * @return the data_emissao
      */
-    public String getEmisao() {
-        return emisao;
+    public String getData_emissao() {
+        return data_emissao;
     }
 
     /**
-     * @param emisao the emisao to set
+     * @param data_emissao the data_emissao to set
      */
-    public void setEmisao(String emisao) {
-        this.emisao = emisao;
-    }
-
-    /**
-     * @return the rs_tabela
-     */
-    public ResultSet getRs_tabela() {
-        return rs_tabela;
-    }
-
-    /**
-     * @param rs_tabela the rs_tabela to set
-     */
-    public void setRs_tabela(ResultSet rs_tabela) {
-        this.rs_tabela = rs_tabela;
+    public void setData_emissao(String data_emissao) {
+        this.data_emissao = data_emissao;
     }
 
 }

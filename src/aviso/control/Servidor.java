@@ -20,7 +20,7 @@ import net.sf.jasperreports.engine.JRException;
  * @author wanderlei
  */
 public class Servidor {
-    
+
     private String matricula;
     private String nome;
     private String cnpf;
@@ -30,20 +30,25 @@ public class Servidor {
     private String ano_recibo;
     private String data_aquisicao_inicial;
     private String data_aquisicao_final;
+    private String data_gozo_inicial;
+    private String data_gozo_final;
+    private String data_retorno;
+    private String data_emisao;
+
     private String faltas;
     private Empresa_Model empresa = new Empresa_Model();
-    
+
     public String teste;
-    
+
     public Servidor() {
     }
-    
+
     public Servidor(String matricula) {
         this.matricula = matricula;
     }
-    
+
     public void lerDadosSercidor() {
-        
+
         System.out.println("Matricula " + getMatricula());
         System.out.println("Nome " + getNome());
         System.out.println("Cpf " + getCnpf());
@@ -57,59 +62,58 @@ public class Servidor {
 
         /* System.out.println(get);*/
     }
-    
+
     public void buscarNome() {
         try {
             Servidor_Model model = new Servidor_Model();
             model.setMatricula(getMatricula());
             model.servidorBuscarNome();
-            
+
             setNome(model.getNome());
-            
+
         } catch (Exception e) {
             Mensagens.mensagem_tela("Erro ao consutar Nome!", "Não foi possível fazer a consulta!\n " + e.getMessage(), "Erro");
         }
-        
+
     }
-    
+
     public void faltasPeriodo() {
         try {
             String mes_inicio = data_aquisicao_inicial.substring(3, 5);
             String data_ano_inicio = data_aquisicao_inicial.substring(6, 10);
-            
+
             String data_ano_fim = data_aquisicao_final.substring(6, 10);
             String mes_fim = data_aquisicao_final.substring(3, 5);
-            
+
             Servidor_Model model = new Servidor_Model();
             model.setMatricula(getMatricula());
             model.servidorBuscarFaltas(mes_inicio, data_ano_inicio, mes_fim, data_ano_fim);
-            
+
             this.setFaltas(model.getFaltas());
-            
+
         } catch (Exception e) {
             Mensagens.mensagem_tela("Erro ao consutar Faltas!", "Não foi possível fazer a consulta!\n " + e.getMessage(), "Erro");
-            
+
         }
     }
-    
+
     public void buscarDados() {
         Servidor_Model model = new Servidor_Model();
         model.setMatricula(getMatricula());
         model.servidorBuscarDados();
         model.setMes_recibo(getMes_recibo());
         model.setAno_recibo(getAno_recibo());
-        model.servidorValorFerias(); 
-        
-        
+        model.servidorValorFerias();
+
         this.setCnpf(model.getCnpf());
         this.setNome_cargo(model.getNome_cargo());
         this.setValor_recibo(model.getValor_recibo());
     }
-    
-    public void gerarRelatorio(Date data_emisao) throws SQLException, IOException {
+
+    public void gerarRelatorio() throws SQLException, IOException {
         Gerar_Relatorio recibo = new Gerar_Relatorio();
         empresa.empresaDados();
-        
+
         recibo.setNome(getNome());
         recibo.setMatricula(getMatricula());
         recibo.setFaltas(getFaltas());
@@ -117,6 +121,9 @@ public class Servidor {
         recibo.setNome_cargo(getNome_cargo());
         recibo.setAquisicao_inicial(getData_aquisicao_inicial());
         recibo.setAquisicao_final(getData_aquisicao_final());
+        recibo.setGozo_inicial(getData_gozo_inicial());
+        recibo.setGozo_final(getData_gozo_final());
+        recibo.setRetorno(getData_retorno());
         recibo.setValor_recibo(getValor_recibo());
         recibo.setNome_empresa(empresa.getNome_empresa());
         recibo.setCnpj_empresa(empresa.getCnpj_empresa());
@@ -124,8 +131,8 @@ public class Servidor {
         recibo.setUf(empresa.getUf());
         recibo.setMes(getMes_recibo());
         recibo.setAno(getAno_recibo());
-        recibo.setEmisao(data_emisao.toString());
-        
+        recibo.setData_emissao(getData_emisao());
+
         recibo.gerar_arquivo_manual();
         try {
             recibo.gerar_aviso(getMatricula());
@@ -274,5 +281,61 @@ public class Servidor {
      */
     public void setFaltas(String faltas) {
         this.faltas = faltas;
+    }
+
+    /**
+     * @return the data_gozo_inicial
+     */
+    public String getData_gozo_inicial() {
+        return data_gozo_inicial;
+    }
+
+    /**
+     * @param data_gozo_inicial the data_gozo_inicial to set
+     */
+    public void setData_gozo_inicial(String data_gozo_inicial) {
+        this.data_gozo_inicial = data_gozo_inicial;
+    }
+
+    /**
+     * @return the data_gozo_final
+     */
+    public String getData_gozo_final() {
+        return data_gozo_final;
+    }
+
+    /**
+     * @param data_gozo_final the data_gozo_final to set
+     */
+    public void setData_gozo_final(String data_gozo_final) {
+        this.data_gozo_final = data_gozo_final;
+    }
+
+    /**
+     * @return the data_retorno
+     */
+    public String getData_retorno() {
+        return data_retorno;
+    }
+
+    /**
+     * @param data_retorno the data_retorno to set
+     */
+    public void setData_retorno(String data_retorno) {
+        this.data_retorno = data_retorno;
+    }
+
+    /**
+     * @return the data_emisao
+     */
+    public String getData_emisao() {
+        return data_emisao;
+    }
+
+    /**
+     * @param data_emisao the data_emisao to set
+     */
+    public void setData_emisao(String data_emisao) {
+        this.data_emisao = data_emisao;
     }
 }

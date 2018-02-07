@@ -67,10 +67,7 @@ public class Servidor {
         try {
             Servidor_Model model = new Servidor_Model();
             model.setMatricula(getMatricula());
-            model.servidorBuscarNome();
-
-            setNome(model.getNome());
-
+            setNome(model.servidorBuscarNome());
         } catch (Exception e) {
             Mensagens.mensagem_tela("Erro ao consutar Nome!", "Não foi possível fazer a consulta!\n " + e.getMessage(), "Erro");
         }
@@ -87,27 +84,36 @@ public class Servidor {
 
             Servidor_Model model = new Servidor_Model();
             model.setMatricula(getMatricula());
-            model.servidorBuscarFaltas(mes_inicio, data_ano_inicio, mes_fim, data_ano_fim);
-
-            this.setFaltas(model.getFaltas());
-
+            this.setFaltas(model.servidorBuscarFaltas(mes_inicio, data_ano_inicio, mes_fim, data_ano_fim));
         } catch (Exception e) {
             Mensagens.mensagem_tela("Erro ao consutar Faltas!", "Não foi possível fazer a consulta!\n " + e.getMessage(), "Erro");
 
         }
     }
 
+    public Boolean buscarValorRecibo() {
+
+        Boolean lancado = true;
+        Servidor_Model model = new Servidor_Model();
+        model.setMatricula(getMatricula());
+        setValor_recibo(model.servidorValorFerias(getMes_recibo(), getAno_recibo()));
+
+        if (Float.parseFloat(getValor_recibo()) <= 0.0f) {
+            lancado = false;
+            Mensagens.mensagem_tela("Erro nos Lançamentos", "Não existe Lançamentos de Férias neste mês!"
+                    + "\nFavor Configurar as remunerações para prosseguir!", "Erro");
+            return lancado;
+        }
+        return lancado;
+    }
+
     public void buscarDados() {
         Servidor_Model model = new Servidor_Model();
         model.setMatricula(getMatricula());
         model.servidorBuscarDados();
-        model.setMes_recibo(getMes_recibo());
-        model.setAno_recibo(getAno_recibo());
-        model.servidorValorFerias();
 
         this.setCnpf(model.getCnpf());
         this.setNome_cargo(model.getNome_cargo());
-        this.setValor_recibo(model.getValor_recibo());
     }
 
     public void gerarRelatorio() throws SQLException, IOException {

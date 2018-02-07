@@ -3,7 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/wanderlei/Documents/NetBeansProjects/Recibo-de-Ferias/src/aviso/control/Aviso.java</file>
+            <file>file:/C:/Users/wanderlei/Documents/NetBeansProjects/AVISO2/Recibo-de-Ferias/src/aviso/model/Servidor_Model.java</file>
+            <file>file:/C:/Users/wanderlei/Documents/NetBeansProjects/AVISO2/Recibo-de-Ferias/src/aviso/control/Servidor.java</file>
+            <file>file:/C:/Users/wanderlei/Documents/NetBeansProjects/AVISO2/Recibo-de-Ferias/src/aviso/view/TelaInicial.java</file>
         </group>
     </open-files>
 </project-private>

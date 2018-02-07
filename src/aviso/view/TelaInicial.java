@@ -12,6 +12,8 @@ import aviso.utilitarios.Mensagens;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +33,7 @@ public class TelaInicial extends javax.swing.JFrame {
     public TelaInicial() {
         initComponents();
         servidor = new Servidor();
-       // txt_mes=FuncoesUtils.DefinirTiposCaracteresETamanho(2,  "1234567890");
+        // txt_mes=FuncoesUtils.DefinirTiposCaracteresETamanho(2,  "1234567890");
     }
 
     /**
@@ -375,7 +377,20 @@ public class TelaInicial extends javax.swing.JFrame {
 
     private void data_gozo_finalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_data_gozo_finalFocusLost
         // TODO add your handling code here:
-        txtRetorno.setText(data_gozo_final.getText());
+        // txtRetorno.setText(data_gozo_final.getText());
+        Date data = new Date(data_gozo_inicial.getText());
+        Calendar c = Calendar.getInstance();
+        c.setTime(data);
+        c.add(Calendar.DATE, +1);
+        
+         
+        SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
+        String datas = formatado.format(c.getTime());
+        txtRetorno.setText(datas);
+        
+        
+
+
     }//GEN-LAST:event_data_gozo_finalFocusLost
 
     private void bt_imprimirtodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_imprimirtodosActionPerformed
@@ -392,15 +407,15 @@ public class TelaInicial extends javax.swing.JFrame {
         d_emissao = txt_data_emissao.getDate();
         String emissao = formato_full.format(d_emissao);
         servidor.setData_emisao(emissao.toUpperCase());
-        
-        servidor.buscarDados();
-        try {
-            servidor.gerarRelatorio();
-        } catch (SQLException | IOException ex) {
-            Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (servidor.buscarValorRecibo()) {
+            servidor.buscarDados();
+            try {
+                servidor.gerarRelatorio();
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(TelaInicial.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
-
     }//GEN-LAST:event_bt_imprimirtodosActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -428,14 +443,11 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        //dispose();
+
         Mensagens.mensagem_sair_sistema();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void data_aquisicao_finalKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_data_aquisicao_finalKeyReleased
-        // TODO add your handling code here:
-
 
     }//GEN-LAST:event_data_aquisicao_finalKeyReleased
 
@@ -445,7 +457,7 @@ public class TelaInicial extends javax.swing.JFrame {
             servidor.setData_aquisicao_inicial(data_aquisicao_inicial.getText());
             servidor.setData_aquisicao_final(data_aquisicao_final.getText());
 
-            if (txt_Faltas.getText().isEmpty()) {
+            if (txt_Faltas.getText().trim().isEmpty()) {
                 servidor.faltasPeriodo();
                 txt_Faltas.setText(servidor.getFaltas());
             }

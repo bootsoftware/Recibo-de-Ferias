@@ -5,6 +5,7 @@
  */
 package aviso.utilitarios;
 
+import com.toedter.calendar.JDateChooser;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
@@ -121,4 +122,23 @@ public class FuncoesUtils {
             return new JTextField();
         }//fim do catch
     }//fim do método
+
+    public static String jdateChooser_To_String(JDateChooser date, String formato) {
+
+        Date pega = date.getDate();
+        SimpleDateFormat formatado = new SimpleDateFormat(formato);//("dd/MM/yyyy");
+        String data = formatado.format(pega);
+
+        return data;
+    }
+
+    public static String jdateChooser_To_String(JDateChooser date) {
+
+        Date pega = date.getDate();
+        SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
+        String data = formatado.format(pega);
+
+        return data;
+    }
+
 }

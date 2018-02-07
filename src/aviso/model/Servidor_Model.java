@@ -19,21 +19,16 @@ import java.sql.Statement;
 public class Servidor_Model {
 
     private String matricula;
-    private String nome;
     private String cnpf;
     private String nome_cargo;
-    private String valor_recibo;
-    private String mes_recibo;
-    private String ano_recibo;
-    private String faltas;
 
     public Servidor_Model() {
 
     }
 
     @SuppressWarnings("empty-statement")
-    public void servidorBuscarNome() {
-
+    public String servidorBuscarNome() {
+        String nome = "";
         try {
             Conexao.abrirConexao();
             Statement stmt = Conexao.con.createStatement();
@@ -41,17 +36,20 @@ public class Servidor_Model {
                     .append(getMatricula())
                     .append("").toString();
             for (ResultSet rs = stmt.executeQuery(sql_pesquisar); rs.next();
-                    setNome(rs.getString("nome")));
+                    nome = rs.getString("nome"));
             Conexao.fecharConexao();
 
         } catch (SQLException exception) {
+            Conexao.fecharConexao();
 
         }
+        return nome;
     }
 
-    public void servidorBuscarFaltas(String mes_inicio, String data_ano_inicio, String mes_fim, String data_ano_fim) {
+    public String servidorBuscarFaltas(String mes_inicio, String data_ano_inicio, String mes_fim, String data_ano_fim) {
         Conexao.abrirConexao();
         Statement stmt;
+        String faltas = "0.00";
         try {
             stmt = Conexao.con.createStatement();
             String sql_pesquisar_falta = (new StringBuilder())
@@ -65,15 +63,16 @@ public class Servidor_Model {
                     .append(mes_fim)
                     .append(")) AND  v.matricula =")
                     .append(this.getMatricula()).toString();
-
             for (ResultSet rs_falta = stmt.executeQuery(sql_pesquisar_falta);
                     rs_falta.next();) {
-                setFaltas(rs_falta.getString("falta"));
+                faltas = rs_falta.getString("falta");
 
             }
         } catch (SQLException ex) {
+            Conexao.fecharConexao();
 
         }
+        return faltas;
     }
 
     public void servidorBuscarDados() {
@@ -93,28 +92,30 @@ public class Servidor_Model {
         }
     }
 
-   public void servidorValorFerias() {
+    public String servidorValorFerias(String mes_recibo, String ano_recibo) {
+        String valor_recibo = "0";
         try {
             Conexao.abrirConexao();
             Statement stmt = Conexao.con.createStatement();
             String sql_pesquisar_valor_recibo = (new StringBuilder()).append("select\nv.valor\nfrom variavel v\njoin provento p on p.codigo = v.provento\nwhere ((v.provento = 18 or v.provento = 47) and v.ano = ")
-                    .append(getAno_recibo())
+                    .append(ano_recibo)
                     .append(" and v.mes = ")
-                    .append(getMes_recibo())
+                    .append(mes_recibo)
                     .append(" and v.matricula = ")
                     .append(getMatricula())
                     .append(")").toString();
             for (ResultSet rs_recibo = stmt.executeQuery(sql_pesquisar_valor_recibo);
                     rs_recibo.next();) {
-                setValor_recibo(rs_recibo.getString("valor"));
-                Conexao.fecharConexao();
+                valor_recibo = rs_recibo.getString("valor");
             }
         } catch (SQLException exception) {
-
+            Conexao.fecharConexao();
+            return valor_recibo;
         }
+        Conexao.fecharConexao();
+        return valor_recibo;
     }
 
-   
     /**
      * @return the matricula
      */
@@ -127,20 +128,6 @@ public class Servidor_Model {
      */
     public void setMatricula(String matricula) {
         this.matricula = matricula;
-    }
-
-    /**
-     * @return the nome
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    /**
-     * @param nome the nome to set
-     */
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     /**
@@ -169,62 +156,6 @@ public class Servidor_Model {
      */
     public void setNome_cargo(String nome_cargo) {
         this.nome_cargo = nome_cargo;
-    }
-
-    /**
-     * @return the valor_recibo
-     */
-    public String getValor_recibo() {
-        return valor_recibo;
-    }
-
-    /**
-     * @param valor_recibo the valor_recibo to set
-     */
-    public void setValor_recibo(String valor_recibo) {
-        this.valor_recibo = valor_recibo;
-    }
-
-    /**
-     * @return the mes_recibo
-     */
-    public String getMes_recibo() {
-        return mes_recibo;
-    }
-
-    /**
-     * @param mes_recibo the mes_recibo to set
-     */
-    public void setMes_recibo(String mes_recibo) {
-        this.mes_recibo = mes_recibo;
-    }
-
-    /**
-     * @return the ano_recibo
-     */
-    public String getAno_recibo() {
-        return ano_recibo;
-    }
-
-    /**
-     * @param ano_recibo the ano_recibo to set
-     */
-    public void setAno_recibo(String ano_recibo) {
-        this.ano_recibo = ano_recibo;
-    }
-
-    /**
-     * @return the faltas
-     */
-    public String getFaltas() {
-        return faltas;
-    }
-
-    /**
-     * @param faltas the faltas to set
-     */
-    public void setFaltas(String faltas) {
-        this.faltas = faltas;
     }
 
 }

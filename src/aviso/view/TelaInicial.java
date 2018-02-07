@@ -5,30 +5,16 @@
  */
 package aviso.view;
 
-import aviso.control.Conexao;
-import aviso.control.Extenso;
-import aviso.control.Gerar_Relatorio;
 import aviso.control.Servidor;
 //import aviso.model.Servidor_Model;
 import aviso.utilitarios.FuncoesUtils;
 import aviso.utilitarios.Mensagens;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import net.sf.jasperreports.engine.JRException;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.output.XMLOutputter;
 import org.joda.time.DateTime;
 
 /**
@@ -45,6 +31,7 @@ public class TelaInicial extends javax.swing.JFrame {
     public TelaInicial() {
         initComponents();
         servidor = new Servidor();
+       // txt_mes=FuncoesUtils.DefinirTiposCaracteresETamanho(2,  "1234567890");
     }
 
     /**
@@ -160,6 +147,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel12.setText("Data de Emissão");
 
+        txt_mes=FuncoesUtils.DefinirTiposCaracteresETamanho(2,  "1234567890");
         txt_mes.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         jLabel1.setText("Mês");
@@ -174,6 +162,7 @@ public class TelaInicial extends javax.swing.JFrame {
             }
         });
 
+        txt_ano=FuncoesUtils.DefinirTiposCaracteresETamanho(4,"1234567890");
         txt_ano.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/aviso/imagens/delete.png"))); // NOI18N
@@ -196,6 +185,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel4.setText("Matricula");
 
+        txt_matricula=FuncoesUtils.DefinirTiposCaracteresETamanho(10,  "1234567890");
         txt_matricula.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txt_matricula.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -211,6 +201,7 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel6.setText("Período de Aquisçâo");
 
+        txt_Faltas=FuncoesUtils.DefinirTiposCaracteresETamanho(10,  ".,1234567890");
         txt_Faltas.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         jLabel11.setText("Faltas");
@@ -228,17 +219,13 @@ public class TelaInicial extends javax.swing.JFrame {
                         .addComponent(bt_imprimirtodos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)
-                        .addGap(54, 54, 54))
+                        .addGap(18, 18, 18))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(113, 113, 113)
-                                        .addComponent(jButton3))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -267,20 +254,25 @@ public class TelaInicial extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(txt_mes, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(txt_ano, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addComponent(jLabel1)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jLabel2)))
+                                                .addComponent(jLabel2))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(txt_mes, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txt_ano, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(67, 67, 67)
+                                                .addGap(62, 62, 62)
                                                 .addComponent(jLabel11))
                                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(64, 64, 64)
-                                                .addComponent(txt_Faltas, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                                .addGap(59, 59, 59)
+                                                .addComponent(txt_Faltas, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jButton3)
+                                        .addGap(19, 19, 19))))
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -292,7 +284,7 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(txt_nome_funcionario, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_nome_funcionario, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -359,9 +351,9 @@ public class TelaInicial extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(bt_imprimirtodos))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_imprimirtodos)
+                    .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -369,14 +361,14 @@ public class TelaInicial extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        setSize(new java.awt.Dimension(363, 378));
+        setSize(new java.awt.Dimension(353, 374));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 

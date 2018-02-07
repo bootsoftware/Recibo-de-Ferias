@@ -5,12 +5,12 @@
  */
 package aviso.control;
 
+import aviso.model.Empresa_Model;
 import aviso.model.Servidor_Model;
 import aviso.utilitarios.Mensagens;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.jasperreports.engine.JRException;

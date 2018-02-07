@@ -5,7 +5,6 @@ import aviso.utilitarios.FuncoesUtils;
 import aviso.utilitarios.Mensagens;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;

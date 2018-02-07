@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package aviso.control;
+package aviso.model;
 
 import aviso.control.Conexao;
 import java.sql.ResultSet;
@@ -23,11 +23,11 @@ public class Empresa_Model {
     private String Cidade;
     private String Uf;
 
-    Empresa_Model() {
+   public Empresa_Model() {
 
     }
 
-    void empresaDados() {
+   public void empresaDados() {
         
         try {
             Conexao.abrirConexao();

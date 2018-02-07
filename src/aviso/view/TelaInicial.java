@@ -24,7 +24,7 @@ import org.joda.time.DateTime;
  * @author wanderlei
  */
 public class TelaInicial extends javax.swing.JFrame {
-
+    
     Servidor servidor;
 
     /**
@@ -187,7 +187,6 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel4.setText("Matricula");
 
-        txt_matricula=FuncoesUtils.DefinirTiposCaracteresETamanho(10,  "1234567890");
         txt_matricula.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         txt_matricula.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -203,7 +202,6 @@ public class TelaInicial extends javax.swing.JFrame {
 
         jLabel6.setText("Período de Aquisçâo");
 
-        txt_Faltas=FuncoesUtils.DefinirTiposCaracteresETamanho(10,  ".,1234567890");
         txt_Faltas.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         jLabel11.setText("Faltas");
@@ -383,31 +381,28 @@ public class TelaInicial extends javax.swing.JFrame {
         c.setTime(data);
         c.add(Calendar.DATE, +1);
         
-         
         SimpleDateFormat formatado = new SimpleDateFormat("dd/MM/yyyy");
         String datas = formatado.format(c.getTime());
         txtRetorno.setText(datas);
         
-        
-
 
     }//GEN-LAST:event_data_gozo_finalFocusLost
 
     private void bt_imprimirtodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_imprimirtodosActionPerformed
-
+        
         servidor.setMes_recibo(txt_mes.getText());
         servidor.setAno_recibo(txt_ano.getText());
         servidor.setData_gozo_inicial(data_gozo_inicial.getText());
         servidor.setData_gozo_final(data_gozo_final.getText());
         servidor.setData_retorno(txtRetorno.getText());
         servidor.setData_emisao(txt_data_emissao.getDateFormatString());
-
+        
         Date d_emissao = new Date();
         DateFormat formato_full = DateFormat.getDateInstance(0);
         d_emissao = txt_data_emissao.getDate();
         String emissao = formato_full.format(d_emissao);
         servidor.setData_emisao(emissao.toUpperCase());
-
+        
         if (servidor.buscarValorRecibo()) {
             servidor.buscarDados();
             try {
@@ -425,7 +420,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txt_matriculaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_matriculaKeyReleased
-
+        
         servidor.setMatricula(txt_matricula.getText());
         servidor.buscarNome();
         txt_nome_funcionario.setText(servidor.getNome());
@@ -433,7 +428,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_matriculaKeyReleased
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-
+        
         Date data_emissao = new Date();
         txt_data_emissao.setDate(data_emissao);
         DateTime dateTime = new DateTime();
@@ -443,7 +438,7 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        
         Mensagens.mensagem_sair_sistema();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -452,14 +447,16 @@ public class TelaInicial extends javax.swing.JFrame {
     }//GEN-LAST:event_data_aquisicao_finalKeyReleased
 
     private void data_aquisicao_finalFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_data_aquisicao_finalFocusLost
-
+        
         if (!FuncoesUtils.dataMaior(data_aquisicao_inicial.getText(), data_aquisicao_final.getText())) {
             servidor.setData_aquisicao_inicial(data_aquisicao_inicial.getText());
             servidor.setData_aquisicao_final(data_aquisicao_final.getText());
-
+            
             if (txt_Faltas.getText().trim().isEmpty()) {
                 servidor.faltasPeriodo();
                 txt_Faltas.setText(servidor.getFaltas());
+            } else {
+                servidor.setFaltas(txt_Faltas.getText());
             }
         } else {
             Mensagens.mensagem_tela("Erro Data de Aquisição!", "A data de de aquisição inicial deve ser maior que a data de aquisição final!", "erro");

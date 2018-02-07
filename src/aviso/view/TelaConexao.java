@@ -6,6 +6,7 @@
 package aviso.view;
 
 import aviso.control.Conexao;
+import aviso.utilitarios.Mensagens;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -196,7 +197,8 @@ public class TelaConexao extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
             // TODO add your handling code here:
-            lerXml();
+            lerConfiguracao();
+
         } catch (JDOMException ex) {
             Logger.getLogger(TelaConexao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -245,14 +247,18 @@ public class TelaConexao extends javax.swing.JFrame {
             System.out.println(arquivo);
             xout.output(documento, arquivo);
             JOptionPane.showMessageDialog(null, "Configuração Salva!");
+
+            Conexao.local_banco = txtBanco.getText();
+            Conexao.local_senha = txtSenha.getText();
+            Conexao.local_servidor = txtServidor.getText();
+            Conexao.local_porta = txtPorta.getText();
+
             dispose();
+
         } catch (IOException ex) {
-            Logger.getLogger(TelaConexao.class.getName()).log(Level.SEVERE, null, ex);
+            Mensagens.mensagem_tela("Erro Conexão!", "Erro ao salvar configuração!\n" + ex, "Erro");
         }
-        Conexao.local_banco = txtBanco.getText();
-        Conexao.local_senha = txtSenha.getText();
-        Conexao.local_servidor = txtServidor.getText();
-        Conexao.local_porta = txtPorta.getText();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -277,26 +283,22 @@ public class TelaConexao extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    public void lerXml() throws JDOMException, IOException {
+    public void lerConfiguracao() throws JDOMException, IOException {
 
         File file = null;
         file = new File((new StringBuilder()).append(System.getProperty("user.dir")).append(".cfg").toString());
 
         if (file.exists()) {
-            //Aqui você informa o nome do arquivo XML. 
-            //File f = new File("c:/mural.xml");
-            //Criamos uma classe SAXBuilder que vai processar o XML4  
-            SAXBuilder sb = new SAXBuilder();
-            //Este documento agora possui toda a estrutura do arquivo.  
-            Document d = sb.build(file);
-            //Recuperamos o elemento root  
-            Element mural = d.getRootElement();
 
-            txtServidor.setText(mural.getChildText("servidor"));
-            txtPorta.setText(mural.getChildText("porta"));
-            txtBanco.setText(mural.getChildText("banco"));
-            txtSenha.setText(mural.getChildText("senha"));
-            txtUser.setText(mural.getChildText("user"));
+            SAXBuilder sb = new SAXBuilder();
+            Document d = sb.build(file);
+            Element conexao = d.getRootElement();
+
+            txtServidor.setText(conexao.getChildText("servidor"));
+            txtPorta.setText(conexao.getChildText("porta"));
+            txtBanco.setText(conexao.getChildText("banco"));
+            txtSenha.setText(conexao.getChildText("senha"));
+            txtUser.setText(conexao.getChildText("user"));
         }
     }
 

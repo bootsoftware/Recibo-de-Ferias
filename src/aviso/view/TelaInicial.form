@@ -409,9 +409,6 @@
           <Events>
             <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txt_matriculaKeyReleased"/>
           </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="txt_matricula=FuncoesUtils.DefinirTiposCaracteresETamanho(10,  &quot;1234567890&quot;);"/>
-          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -440,9 +437,6 @@
               <Font name="Tahoma" size="12" style="1"/>
             </Property>
           </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="txt_Faltas=FuncoesUtils.DefinirTiposCaracteresETamanho(10,  &quot;.,1234567890&quot;);"/>
-          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
